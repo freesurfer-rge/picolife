@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <atomic>
 
 #include "hardware/pio.h"
 
@@ -27,9 +28,10 @@ public:
     void SendBuffer();
 
 private:
+    std::atomic<unsigned char> activeBuffer;
     PIOCommunicator comms;
 
-    std::array<uint32_t, (nRows / 2) * (nWordsPerRow * nFrames)> output_buffer;
+    std::array<uint32_t, (nRows / 2) * (nWordsPerRow * nFrames)> outputBuffer0, outputBuffer1;
 
     bool is_pixel_on(const uint8_t value, const unsigned int iFrame) const;
     std::array<uint32_t, LEDArray::nWordsPerRow> ConstructRowPair(
