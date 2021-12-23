@@ -106,7 +106,7 @@ void LEDArray::UpdateBuffer(
                     unsigned int linearIdx = (iRow * nCols) + idxX;
                     nxtWord[(j * 6) + ColourPinOffsets::red1] = this->is_pixel_on(red.at(linearIdx), iFrame);
                     nxtWord[(j * 6) + ColourPinOffsets::green1] = this->is_pixel_on(green.at(linearIdx), iFrame);
-                    nxtWord[(j * 6) + ColourPinOffsets::red1] = this->is_pixel_on(blue.at(linearIdx), iFrame);
+                    nxtWord[(j * 6) + ColourPinOffsets::blue1] = this->is_pixel_on(blue.at(linearIdx), iFrame);
 
                     linearIdx = ((iRow + (nRows / 2)) * nCols) + idxX;
                     nxtWord[(j * 6) + ColourPinOffsets::red2] = this->is_pixel_on(red.at(linearIdx), iFrame);
