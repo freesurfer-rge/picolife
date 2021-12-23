@@ -91,15 +91,15 @@ void LEDArray::UpdateBuffer(
     // We send rows out two at a time, separated by 16 rows
     for (unsigned int iRow = 0; iRow < (nRows / 2); ++iRow)
     {
-        std::array<uint32_t, nWordsPerRow * nFrames> tmp_buffer;
+        std::array<uint32_t, nWordsPerRow * nFrames> rowFrames;
 
         for (unsigned int iFrame = 0; iFrame < nFrames; ++iFrame)
         {
             auto nextRow = this->ConstructRowPair(red, green, blue, iFrame, iRow);
-            std::copy(nextRow.begin(), nextRow.end(), tmp_buffer.begin() + (iFrame * nWordsPerRow));
+            std::copy(nextRow.begin(), nextRow.end(), rowFrames.begin() + (iFrame * nWordsPerRow));
         }
 
-        std::copy(tmp_buffer.begin(), tmp_buffer.end(), this->output_buffer.begin() + (iRow * (nWordsPerRow * nFrames)));
+        std::copy(rowFrames.begin(), rowFrames.end(), this->output_buffer.begin() + (iRow * (nWordsPerRow * nFrames)));
     }
 }
 
@@ -123,13 +123,16 @@ std::array<uint32_t, LEDArray::nWordsPerRow> LEDArray::ConstructRowPair(
 
         for (unsigned int j = 0; j < LEDArray::nPixelsPerWord; ++j)
         {
+            // Compute our actual x-coordinate
             const unsigned int idxX = j + (LEDArray::nPixelsPerWord * i);
 
+            // Bits for iRow
             unsigned int linearIdx = (iRow * LEDArray::nCols) + idxX;
             nxtWord[(j * 6) + ColourPinOffsets::red1] = this->is_pixel_on(red.at(linearIdx), iFrame);
             nxtWord[(j * 6) + ColourPinOffsets::green1] = this->is_pixel_on(green.at(linearIdx), iFrame);
             nxtWord[(j * 6) + ColourPinOffsets::blue1] = this->is_pixel_on(blue.at(linearIdx), iFrame);
 
+            // Bits for iRow + nRows/2
             linearIdx = ((iRow + (LEDArray::nRows / 2)) * LEDArray::nCols) + idxX;
             nxtWord[(j * 6) + ColourPinOffsets::red2] = this->is_pixel_on(red.at(linearIdx), iFrame);
             nxtWord[(j * 6) + ColourPinOffsets::green2] = this->is_pixel_on(green.at(linearIdx), iFrame);
