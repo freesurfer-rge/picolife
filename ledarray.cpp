@@ -150,7 +150,7 @@ void LEDArray::SendBuffer()
 {
     for (unsigned int i = 0; i < nRows / 2; i++)
     {
-        gpio_put(ControlPins::outputEnable, true);
+        this->DisableDisplay();
         gpio_put(RowPins::rowC, i & 8);
         gpio_put(RowPins::rowD, i & 4);
         gpio_put(RowPins::rowA, i & 2);
@@ -160,8 +160,20 @@ void LEDArray::SendBuffer()
             unsigned int idx = (iFrame * nWordsPerRow) + (i * nWordsPerRow * nFrames);
             comms.write32blocking(&(output_buffer.at(idx)), nWordsPerRow);
             comms.waitTXdrain();
-            gpio_put(ControlPins::outputEnable, false);
+            this->EnableDisplay();
             sleep_us(1);
         }
     }
+}
+
+void LEDArray::EnableDisplay() const
+{
+    // Recall that the enable pin is active low
+    gpio_put(ControlPins::outputEnable, false);
+}
+
+void LEDArray::DisableDisplay() const
+{
+    // Recall that the enable pin is active low
+    gpio_put(ControlPins::outputEnable, true);
 }

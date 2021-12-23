@@ -38,4 +38,7 @@ private:
         const std::array<uint8_t, LEDArray::nCols * LEDArray::nRows> &blue,
         const unsigned int iFrame,
         const unsigned int iRow) const;
+
+    void EnableDisplay() const;
+    void DisableDisplay() const;
 };
