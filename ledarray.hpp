@@ -41,4 +41,5 @@ private:
 
     void EnableDisplay() const;
     void DisableDisplay() const;
+    void SelectRow(const unsigned int iRow) const;
 };
