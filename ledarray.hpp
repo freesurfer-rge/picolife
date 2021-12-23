@@ -26,6 +26,8 @@ public:
 
     void SendBuffer();
 
+    void LaunchRefresh();
+
 private:
     PIOCommunicator comms;
 

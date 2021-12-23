@@ -1,5 +1,7 @@
 #include <algorithm>
 #include <bitset>
+#include <iostream>
+#include <stdio.h>
 #include <set>
 
 // Headers from the Pico SDK
@@ -40,12 +42,18 @@ enum ControlPins
 };
 
 // Program to run refreshes on the second core
-void core1Entry()
+void core1_entry()
 {
+    printf("%s: Starting\n", __FUNCTION__);
+    sleep_ms(1000);
     LEDArray *target = reinterpret_cast<LEDArray *>(multicore_fifo_pop_blocking());
+    sleep_ms(1000);
+    printf("%s: Received target pointer\n", __FUNCTION__);
     while (true)
     {
         target->SendBuffer();
+        printf("%s: Running\n", __FUNCTION__);
+        sleep_ms(100);
     }
 }
 
@@ -93,9 +101,13 @@ LEDArray::LEDArray(PIO targetPio) : comms(),
     this->comms.sm = sm;
     this->comms.pin_clk = ControlPins::clk;
     this->comms.pin_data = firstColourPin;
+}
 
+void LEDArray::LaunchRefresh()
+{
     // Kick off the second core
-    multicore_launch_core1(core1Entry);
+    multicore_reset_core1();
+    multicore_launch_core1(core1_entry);
     multicore_fifo_push_blocking(reinterpret_cast<uintptr_t>(this));
 }
 

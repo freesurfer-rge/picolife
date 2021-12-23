@@ -11,8 +11,6 @@
 
 #include "ledarray.hpp"
 
-
-
 uint8_t value_for_row(const unsigned int iRow)
 {
     return iRow / 2;
@@ -21,10 +19,12 @@ uint8_t value_for_row(const unsigned int iRow)
 int main()
 {
     stdio_init_all();
+    sleep_ms(10);
     std::cout << "LED Driver" << std::endl;
+    std::cout << "==========" << std::endl;
 
     LEDArray ledArr(pio0);
-    
+
     // Set up an image
     std::array<uint8_t, 32 * 32> red;
     std::array<uint8_t, 32 * 32> green;
@@ -33,7 +33,6 @@ int main()
     green.fill(0);
     blue.fill(0);
 
-    
     for (unsigned int iSquare = 0; iSquare < 64; iSquare++)
     {
         unsigned int sx = iSquare % 8;
@@ -53,8 +52,7 @@ int main()
             }
         }
     }
-    
-    
+
     /*
     for (unsigned int iy = 0; iy < ledArr.nRows; ++iy)
     {
@@ -66,15 +64,18 @@ int main()
     }
     */
 
-   ledArr.UpdateBuffer(red, green, blue);
+    std::cout << "Prepared output" << std::endl;
+    sleep_ms(100);
+    ledArr.LaunchRefresh();
+    ledArr.UpdateBuffer(red, green, blue);
 
-    std::cout << "Starting PIO" << std::endl;
+    std::cout << "Starting main loop" << std::endl;
 
     unsigned long itCount = 0;
     while (true)
     {
-        std::cout << "PIO running " << itCount << std::endl;
-        sleep_ms(1000);
+        std::cout << "Empty loop running " << itCount << std::endl;
+        sleep_ms(2000);
         ++itCount;
     }
 
