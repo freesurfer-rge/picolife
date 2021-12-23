@@ -29,5 +29,5 @@ private:
 
     std::array<uint32_t, (nRows / 2) * (nWordsPerRow * nFrames)> output_buffer;
 
-    bool is_pixel_on(const uint8_t value, const unsigned int iFrame, const unsigned int nFrames);
+    bool is_pixel_on(const uint8_t value, const unsigned int iFrame);
 };
