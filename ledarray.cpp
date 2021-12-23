@@ -95,32 +95,53 @@ void LEDArray::UpdateBuffer(
 
         for (unsigned int iFrame = 0; iFrame < nFrames; ++iFrame)
         {
-            for (unsigned int i = 0; i < nWordsPerRow; ++i)
-            {
-                std::bitset<32> nxtWord(0);
-
-                for (unsigned int j = 0; j < nPixelsPerWord; ++j)
-                {
-                    const unsigned int idxX = j + (nPixelsPerWord * i);
-
-                    unsigned int linearIdx = (iRow * nCols) + idxX;
-                    nxtWord[(j * 6) + ColourPinOffsets::red1] = this->is_pixel_on(red.at(linearIdx), iFrame);
-                    nxtWord[(j * 6) + ColourPinOffsets::green1] = this->is_pixel_on(green.at(linearIdx), iFrame);
-                    nxtWord[(j * 6) + ColourPinOffsets::blue1] = this->is_pixel_on(blue.at(linearIdx), iFrame);
-
-                    linearIdx = ((iRow + (nRows / 2)) * nCols) + idxX;
-                    nxtWord[(j * 6) + ColourPinOffsets::red2] = this->is_pixel_on(red.at(linearIdx), iFrame);
-                    nxtWord[(j * 6) + ColourPinOffsets::green2] = this->is_pixel_on(green.at(linearIdx), iFrame);
-                    nxtWord[(j * 6) + ColourPinOffsets::blue2] = this->is_pixel_on(blue.at(linearIdx), iFrame);
-                }
-                tmp_buffer.at(i + (nWordsPerRow * iFrame)) = nxtWord.to_ulong();
-            }
+            auto nextRow = this->ConstructRowPair(red, green, blue, iFrame, iRow);
+            std::copy(nextRow.begin(), nextRow.end(), tmp_buffer.begin() + (iFrame * nWordsPerRow));
         }
+
         std::copy(tmp_buffer.begin(), tmp_buffer.end(), this->output_buffer.begin() + (iRow * (nWordsPerRow * nFrames)));
     }
 }
 
-bool LEDArray::is_pixel_on(const uint8_t value, const unsigned int iFrame)
+std::array<uint32_t, LEDArray::nWordsPerRow> LEDArray::ConstructRowPair(
+    const std::array<uint8_t, LEDArray::nCols * LEDArray::nRows> &red,
+    const std::array<uint8_t, LEDArray::nCols * LEDArray::nRows> &green,
+    const std::array<uint8_t, LEDArray::nCols * LEDArray::nRows> &blue,
+    const unsigned int iFrame,
+    const unsigned int iRow) const
+{
+    /*
+    Constructs an output buffer for a pair of rows.
+
+    Each output word has 24 active bits: 2 rows * 4 pixels * 3 colours
+    */
+    std::array<uint32_t, LEDArray::nWordsPerRow> result;
+
+    for (unsigned int i = 0; i < LEDArray::nWordsPerRow; ++i)
+    {
+        std::bitset<32> nxtWord(0);
+
+        for (unsigned int j = 0; j < LEDArray::nPixelsPerWord; ++j)
+        {
+            const unsigned int idxX = j + (LEDArray::nPixelsPerWord * i);
+
+            unsigned int linearIdx = (iRow * LEDArray::nCols) + idxX;
+            nxtWord[(j * 6) + ColourPinOffsets::red1] = this->is_pixel_on(red.at(linearIdx), iFrame);
+            nxtWord[(j * 6) + ColourPinOffsets::green1] = this->is_pixel_on(green.at(linearIdx), iFrame);
+            nxtWord[(j * 6) + ColourPinOffsets::blue1] = this->is_pixel_on(blue.at(linearIdx), iFrame);
+
+            linearIdx = ((iRow + (LEDArray::nRows / 2)) * LEDArray::nCols) + idxX;
+            nxtWord[(j * 6) + ColourPinOffsets::red2] = this->is_pixel_on(red.at(linearIdx), iFrame);
+            nxtWord[(j * 6) + ColourPinOffsets::green2] = this->is_pixel_on(green.at(linearIdx), iFrame);
+            nxtWord[(j * 6) + ColourPinOffsets::blue2] = this->is_pixel_on(blue.at(linearIdx), iFrame);
+        }
+        result.at(i) = nxtWord.to_ulong();
+    }
+
+    return result;
+}
+
+bool LEDArray::is_pixel_on(const uint8_t value, const unsigned int iFrame) const
 {
     return value > iFrame;
 }
