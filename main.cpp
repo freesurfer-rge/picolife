@@ -67,10 +67,10 @@ int main()
     */
 
     std::cout << "Prepared output" << std::endl;
+    ledArr.UpdateBuffer(red, green, blue);
     sleep_ms(1000);
     std::cout << "Launching refresh core" << std::endl;
     ledArr.LaunchRefresh();
-    ledArr.UpdateBuffer(red, green, blue);
 
     std::cout << "Starting main loop" << std::endl;
 
