@@ -31,5 +31,15 @@ private:
 
     std::array<uint32_t, (nRows / 2) * (nWordsPerRow * nFrames)> output_buffer;
 
-    bool is_pixel_on(const uint8_t value, const unsigned int iFrame);
+    bool is_pixel_on(const uint8_t value, const unsigned int iFrame) const;
+    std::array<uint32_t, LEDArray::nWordsPerRow> ConstructRowPair(
+        const std::array<uint8_t, LEDArray::nCols * LEDArray::nRows> &red,
+        const std::array<uint8_t, LEDArray::nCols * LEDArray::nRows> &green,
+        const std::array<uint8_t, LEDArray::nCols * LEDArray::nRows> &blue,
+        const unsigned int iFrame,
+        const unsigned int iRow) const;
+
+    void EnableDisplay() const;
+    void DisableDisplay() const;
+    void SelectRow(const unsigned int iRow) const;
 };
