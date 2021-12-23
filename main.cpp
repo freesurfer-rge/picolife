@@ -19,7 +19,7 @@ uint8_t value_for_row(const unsigned int iRow)
 int main()
 {
     stdio_init_all();
-    sleep_ms(10);
+    sleep_ms(100);
     std::cout << "LED Driver" << std::endl;
     std::cout << "==========" << std::endl;
 
@@ -32,6 +32,8 @@ int main()
     red.fill(0);
     green.fill(0);
     blue.fill(0);
+    std::cout << "Created empty framebuffers" << std::endl;
+    std::cout << "-----------------------------------------------" << std::endl;
 
     for (unsigned int iSquare = 0; iSquare < 64; iSquare++)
     {
@@ -65,7 +67,8 @@ int main()
     */
 
     std::cout << "Prepared output" << std::endl;
-    sleep_ms(100);
+    sleep_ms(1000);
+    std::cout << "Launching refresh core" << std::endl;
     ledArr.LaunchRefresh();
     ledArr.UpdateBuffer(red, green, blue);
 
