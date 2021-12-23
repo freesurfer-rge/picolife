@@ -49,11 +49,11 @@ queue_t call_queue;
 // Program to run refreshes on the second core
 void core1_entry()
 {
-    printf("%s: Starting\n", __FUNCTION__);
+    //printf("%s: Starting\n", __FUNCTION__);
     
     queue_entry_t entry;
     queue_remove_blocking(&call_queue, &entry);
-    printf("%s: Received %u\n", __FUNCTION__, entry.ledArr);
+    //printf("%s: Received %u\n", __FUNCTION__, entry.ledArr);
     
     while (true)
     {

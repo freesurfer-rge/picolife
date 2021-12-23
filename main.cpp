@@ -35,6 +35,7 @@ int main()
     std::cout << "Created empty framebuffers" << std::endl;
     std::cout << "-----------------------------------------------" << std::endl;
 
+    /*
     for (unsigned int iSquare = 0; iSquare < 64; iSquare++)
     {
         unsigned int sx = iSquare % 8;
@@ -54,8 +55,9 @@ int main()
             }
         }
     }
+    */
 
-    /*
+    
     for (unsigned int iy = 0; iy < ledArr.nRows; ++iy)
     {
         for (unsigned int ix = 0; ix < ledArr.nCols; ++ix)
@@ -64,7 +66,7 @@ int main()
             blue[ix + (ledArr.nCols * iy)] = ((ix) <= iy) * iy;
         }
     }
-    */
+    
 
     std::cout << "Prepared output" << std::endl;
     ledArr.UpdateBuffer(red, green, blue);
