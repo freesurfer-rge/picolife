@@ -50,17 +50,18 @@ queue_t call_queue;
 void core1_entry()
 {
     //puts("Starting\n");
-    //puts("on core1\n");
+    puts("on core1\n");
     // sleep_ms(1000);
     
     queue_entry_t entry;
     queue_remove_blocking(&call_queue, &entry);
     // puts("%s: Received from queue\n", __FUNCTION__);
     //puts("Here on core1");
-    //printf("%s: Received %u\n", __FUNCTION__, entry.ledArr);
+    printf("%s: Received %u\n", __FUNCTION__, entry.ledArr);
     
     while (true)
     {
+        printf("%s: Sending buffer\n");
         entry.ledArr->SendBuffer();
     }
 }
@@ -177,8 +178,8 @@ void LEDArray::SendBuffer()
         for (unsigned int iFrame = 0; iFrame < nFrames; ++iFrame)
         {
             unsigned int idx = (iFrame * nWordsPerRow) + (i * nWordsPerRow * nFrames);
-            comms.write32blocking(&(output_buffer.at(idx)), nWordsPerRow);
-            comms.waitTXdrain();
+            //comms.write32blocking(&(output_buffer.at(idx)), nWordsPerRow);
+            //comms.waitTXdrain();
             gpio_put(ControlPins::outputEnable, false);
             busy_wait_us(1);
         }
