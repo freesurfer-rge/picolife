@@ -24,6 +24,7 @@ pico_sdk_init()
 add_executable(${PROJECT_NAME}
     main.cpp
     pioCommunicator.cpp
+    ledarray.cpp
 )
 
 
