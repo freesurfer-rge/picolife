@@ -15,7 +15,7 @@ public:
     static const unsigned int nCols = 32;
     static const unsigned int nPixelsPerWord = 4;
     static const unsigned int nWordsPerRow = nCols / nPixelsPerWord;
-    static const unsigned int nFrames = 32;
+    static const unsigned int nFrames = 16;
 
     LEDArray(PIO targetPio);
 

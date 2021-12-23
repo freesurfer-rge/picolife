@@ -19,7 +19,7 @@
 
 uint8_t value_for_row(const unsigned int iRow)
 {
-    return iRow;
+    return iRow / 2;
 }
 
 int main()
@@ -58,13 +58,14 @@ int main()
         }
     }
     
+    
     /*
-    for (unsigned int iy = 0; iy < nRows; ++iy)
+    for (unsigned int iy = 0; iy < ledArr.nRows; ++iy)
     {
-        for (unsigned int ix = 0; ix < nCols; ++ix)
+        for (unsigned int ix = 0; ix < ledArr.nCols; ++ix)
         {
-            red[ix + (nCols * iy)] = 255;
-            green[ix + (nCols * iy)] = ((ix) <= iy) * 255;
+            red.at(ix + (ledArr.nCols * iy)) = iy;
+            blue[ix + (ledArr.nCols * iy)] = ((ix) <= iy) * iy;
         }
     }
     */
