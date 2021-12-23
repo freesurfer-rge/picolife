@@ -9,6 +9,8 @@
 class LEDArray
 {
 public:
+    static constexpr float pio_freq = 50 * 1024 * 1024; // Hz
+
     static const unsigned int nRows = 32;
     static const unsigned int nCols = 32;
     static const unsigned int nPixelsPerWord = 4;
