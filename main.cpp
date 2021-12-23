@@ -9,10 +9,6 @@
 #include "hardware/pio.h"
 #include "hardware/clocks.h"
 
-#include "led_line.pio.h"
-
-#include "pioCommunicator.hpp"
-
 #include "ledarray.hpp"
 
 
@@ -77,9 +73,9 @@ int main()
     unsigned long itCount = 0;
     while (true)
     {
-        // std::cout << "PIO running " << itCount << std::endl;
-        ledArr.SendBuffer();
-        itCount++;
+        std::cout << "PIO running " << itCount << std::endl;
+        sleep_ms(1000);
+        ++itCount;
     }
 
     return 0;
