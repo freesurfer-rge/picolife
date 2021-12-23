@@ -157,7 +157,7 @@ void LEDArray::SendBuffer()
         this->SelectRow(i);
         for (unsigned int iFrame = 0; iFrame < nFrames; ++iFrame)
         {
-            unsigned int idx = (iFrame * nWordsPerRow) + (i * nWordsPerRow * nFrames);
+            unsigned int idx = nWordsPerRow * (iFrame + (i * nFrames));
             comms.write32blocking(&(output_buffer.at(idx)), nWordsPerRow);
             comms.waitTXdrain();
             this->EnableDisplay();
