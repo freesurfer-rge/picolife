@@ -1,0 +1,64 @@
+.program led_line
+
+.side_set 2
+
+; CLK is side pin 0
+; LATCH is side pin 1
+
+.define CLK_HIGH 1
+.define LATCH_HIGH 2
+
+; R1 is Out pin 3
+; R2 is Out pin 1
+; G1 is Out pin 4
+; G2 is Out pin 5
+; B1 is Out pin 2
+; B2 is Out pin 0
+
+    set x 31 side 0
+
+line_loop:
+    out pins 6 side 0 ; Write 6 values for next two LEDs
+    nop side CLK_HIGH ; For some reason, doing this on the previous line causes trouble
+    jmp x-- line_loop side 0
+
+    nop side LATCH_HIGH ; Make the output shown
+
+
+% c-sdk {
+#include "hardware/gpio.h"
+
+static inline void led_line_init(
+    PIO pio,
+    const uint sm,
+    const uint offset,
+    const float clkdiv,
+    const uint pin_clk,
+    const int pin_data)
+{
+    const uint nbits = 24; // Buffersize for autopull... 24 bits for four leds
+
+    pio_sm_config c = led_line_program_get_default_config(offset);
+
+    sm_config_set_out_pins(&c, pin_data, 6); // Six output pins
+    sm_config_set_sideset_pins(&c, pin_clk); // Set the base sideset pin
+
+    // Confgure output shift (right shift, autopull at 24 bits)
+    sm_config_set_out_shift(&c, true, true, nbits); 
+
+    sm_config_set_clkdiv(&c, clkdiv);
+
+    pio_gpio_init(pio, pin_clk);
+    pio_gpio_init(pio, pin_clk+1);
+    for(unsigned int i=0; i<6; ++i)
+    {
+        pio_gpio_init(pio, pin_data+i);
+    }
+
+    // Following feels like a hack....
+    pio_sm_set_consecutive_pindirs(pio, sm, pin_clk, 13, true);
+
+    pio_sm_init(pio, sm, offset, &c);
+}
+
+%}
