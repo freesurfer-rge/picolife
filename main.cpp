@@ -101,10 +101,9 @@ int main()
     SparseLife grid(LEDArray::nCols, LEDArray::nRows, true, true);
 
     // Setup a glider
-    auto gliderStream = std::stringstream(gliderCells);
+    auto cellStream = std::stringstream(fireShip);
     CellPattern cp;
-    cp.LoadFromStream(gliderStream);
-    cp.FlipX();
+    cp.LoadFromStream(cellStream);
 
     grid.AddCells(cp.GetCells());
 
