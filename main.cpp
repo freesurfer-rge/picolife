@@ -7,6 +7,7 @@
 
 #include "pico/multicore.h"
 #include "pico/stdlib.h"
+#include "pico/time.h"
 #include "hardware/pio.h"
 #include "hardware/clocks.h"
 
@@ -23,7 +24,9 @@ void core1Entry()
 
     while(true)
     {
+        auto targetTime = make_timeout_time_ms(10);
         ledArr->SendBuffer();
+        sleep_until(targetTime);
     }
 }
 
