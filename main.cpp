@@ -6,6 +6,8 @@
 
 #include "pioCommunicator.hpp"
 
+#include "sparselife.hpp"
+
 #include "ledarray.hpp"
 #include "ledimage.hpp"
 
@@ -73,6 +75,18 @@ LEDImage CreateSquareDiagonal()
     return result;
 }
 
+LEDImage ImageFromSparseLife(const SparseLife &grid)
+{
+    LEDImage result;
+
+    for (auto c : grid.GetCells())
+    {
+        result.SetPixel(c.first, c.second, 8, 0, 8);
+    }
+
+    return result;
+}
+
 int main()
 {
     stdio_init_all();
@@ -80,9 +94,23 @@ int main()
 
     LEDArray *ledArr = new LEDArray(pio0);
 
-    // Set up images
-    LEDImage testCard = CreateTestCard();
-    LEDImage squareDiag = CreateSquareDiagonal();
+    // Set up Life Board
+    SparseLife grid(LEDArray::nCols, LEDArray::nRows, true, true);
+
+    // Setup a glider
+    grid.AddCell(SparseLife::Cell(13, 3));
+    grid.AddCell(SparseLife::Cell(14, 3));
+    grid.AddCell(SparseLife::Cell(15, 3));
+    grid.AddCell(SparseLife::Cell(15, 4));
+    grid.AddCell(SparseLife::Cell(14, 5));
+
+
+    // Setup another glider
+    grid.AddCell(SparseLife::Cell(3, 22));
+    grid.AddCell(SparseLife::Cell(3, 23));
+    grid.AddCell(SparseLife::Cell(3, 24));
+    grid.AddCell(SparseLife::Cell(4, 24));
+    grid.AddCell(SparseLife::Cell(5, 23));
 
     std::cout << "Starting core1" << std::endl;
     multicore_launch_core1(core1Entry);
@@ -92,18 +120,16 @@ int main()
     std::cout << "Starting Main Loop" << std::endl;
 
     unsigned long itCount = 0;
+    auto img = ImageFromSparseLife(grid);
+    img.SendToLEDArray(*ledArr);
+    sleep_ms(1000);
     while (true)
     {
-        if (itCount % 2)
-        {
-            testCard.SendToLEDArray(*ledArr);
-        }
-        else
-        {
-            squareDiag.SendToLEDArray(*ledArr);
-        }
-        itCount++;
-        sleep_ms(1000);
+        auto targetTime = make_timeout_time_ms(100);
+        grid.Update();
+        auto nxtImage = ImageFromSparseLife(grid);
+        nxtImage.SendToLEDArray(*ledArr);
+        sleep_until(targetTime);
     }
 
     return 0;
