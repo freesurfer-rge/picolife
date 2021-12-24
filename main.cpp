@@ -80,13 +80,22 @@ LEDImage CreateSquareDiagonal()
     return result;
 }
 
+ColourVector rV(0.2f, 0.3f, 0.01f, 5, 10);
+ColourVector gV(0.1f, -0.3f, 0.03f, 6, 8);
+ColourVector bV(-0.2f, 0.3f, 0.02f, 4, 6);
+
 LEDImage ImageFromSparseLife(const SparseLife &grid, const unsigned long itCount)
 {
     LEDImage result;
 
     for (auto c : grid.GetCells())
     {
-        result.SetPixel(c.first, c.second, 8, 0, 8);
+        const int16_t ix = c.first;
+        const int16_t iy = c.second;
+        auto r = rV.GetColour(ix, iy, itCount);
+        auto g = gV.GetColour(ix, iy, itCount);
+        auto b = bV.GetColour(ix, iy, itCount);
+        result.SetPixel(ix, iy, r, g, b);
     }
 
     return result;
