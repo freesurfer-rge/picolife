@@ -6,6 +6,7 @@
 
 #include "pioCommunicator.hpp"
 
+#include "cells.hpp"
 #include "sparselife.hpp"
 
 #include "ledarray.hpp"

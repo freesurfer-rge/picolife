@@ -9,6 +9,8 @@ class CellPattern
 public:
     typedef std::pair<int16_t, int16_t> Cell;
 
+    CellPattern();
+
     const std::set<Cell> &GetCells() const;
 
 private:
