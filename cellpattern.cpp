@@ -16,11 +16,11 @@ void CellPattern::LoadFromStream(std::istream &is)
     int16_t yCurr = 0;
     while (std::getline(is, line))
     {
-        if( !this->IsComment(line))
+        if (!this->IsComment(line))
         {
-            for( size_t i=0; i<line.size(); ++i)
+            for (size_t i = 0; i < line.size(); ++i)
             {
-                if( line.at(i)=='O')
+                if (line.at(i) == 'O')
                 {
                     auto nxtCell = Cell(i, yCurr);
                     this->activeCells->emplace(nxtCell);
@@ -38,4 +38,21 @@ bool CellPattern::IsComment(const std::string &s) const
         return false;
     }
     return s.at(0) == '!';
+}
+
+void CellPattern::ExchangeXY()
+{
+    std::set<CellPattern::Cell> update;
+
+    for (auto c : *(this->activeCells))
+    {
+        update.emplace(Cell(c.second, c.first));
+    }
+
+    this->activeCells->clear();
+
+    for (auto c : update)
+    {
+        this->activeCells->emplace(c);
+    }
 }

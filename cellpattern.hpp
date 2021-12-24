@@ -16,6 +16,8 @@ public:
     const std::set<Cell> &GetCells() const;
 
     void LoadFromStream(std::istream& is);
+
+    void ExchangeXY();
 private:
     std::unique_ptr<std::set<Cell>> activeCells;
 
