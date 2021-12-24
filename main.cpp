@@ -25,7 +25,7 @@ int main()
     stdio_init_all();
     std::cout << "LED Driver" << std::endl;
 
-    LEDArray ledArr(pio0);
+    LEDArray* ledArr = new LEDArray(pio0);
 
     // Set up an image
     std::array<uint8_t, 32 * 32> redSq, redTC;
@@ -50,7 +50,7 @@ int main()
                 unsigned int idxX = sx * 4 + ix;
                 unsigned int idxY = sy * 4 + iy;
 
-                const unsigned int linearIdx = (ledArr.nCols * idxY) + idxX;
+                const unsigned int linearIdx = (ledArr->nCols * idxY) + idxX;
                 redTC.at(linearIdx) = (iSquare & 1) ? value_for_row(idxY) : 0;
                 greenTC.at(linearIdx) = (iSquare & 2) ? value_for_row(idxY) : 0;
                 blueTC.at(linearIdx) = (iSquare & 4) ? value_for_row(idxY) : 0;
@@ -58,12 +58,12 @@ int main()
         }
     }
 
-    for (unsigned int iy = 0; iy < ledArr.nRows; ++iy)
+    for (unsigned int iy = 0; iy < ledArr->nRows; ++iy)
     {
-        for (unsigned int ix = 0; ix < ledArr.nCols; ++ix)
+        for (unsigned int ix = 0; ix < ledArr->nCols; ++ix)
         {
-            redSq.at(ix + (ledArr.nCols * iy)) = ledArr.nFrames - value_for_row(iy);
-            blueSq[ix + (ledArr.nCols * iy)] = ((ix) <= iy) * value_for_row(iy);
+            redSq.at(ix + (ledArr->nCols * iy)) = ledArr->nFrames - value_for_row(iy);
+            blueSq[ix + (ledArr->nCols * iy)] = ((ix) <= iy) * value_for_row(iy);
         }
     }
 
@@ -73,18 +73,18 @@ int main()
     while (true)
     {
         // std::cout << "PIO running " << itCount << std::endl;
-        ledArr.SendBuffer();
+        ledArr->SendBuffer();
         itCount++;
         if ((itCount / 100) % 2)
         {
             // std::cout << "Sending Test Card " << itCount << std::endl;
-            ledArr.UpdateBuffer(redTC, greenTC, blueTC);
+            ledArr->UpdateBuffer(redTC, greenTC, blueTC);
         }
         else
         {
 
             // std::cout << "Sending Square " << itCount << std::endl;
-            ledArr.UpdateBuffer(redSq, greenSq, blueSq);
+            ledArr->UpdateBuffer(redSq, greenSq, blueSq);
         }
         // sleep_ms(1);
     }
