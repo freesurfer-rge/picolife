@@ -97,9 +97,12 @@ int main()
     // Set up Life Board
     SparseLife grid(LEDArray::nCols, LEDArray::nRows, true, true);
 
-    grid.AddCell(SparseLife::Cell(3, 3));
-    grid.AddCell(SparseLife::Cell(4, 3));
-    grid.AddCell(SparseLife::Cell(5, 3));
+    // Setup a glider
+    grid.AddCell(SparseLife::Cell(13, 3));
+    grid.AddCell(SparseLife::Cell(14, 3));
+    grid.AddCell(SparseLife::Cell(15, 3));
+    grid.AddCell(SparseLife::Cell(15, 4));
+    grid.AddCell(SparseLife::Cell(14, 5));
 
     std::cout << "Starting core1" << std::endl;
     multicore_launch_core1(core1Entry);
@@ -119,7 +122,7 @@ int main()
         grid.Update();
         std::cout << "Update complete" << std::endl;
         auto nxtImage = ImageFromSparseLife(grid);
-        img.SendToLEDArray(*ledArr);
+        nxtImage.SendToLEDArray(*ledArr);
         sleep_until(targetTime);
     }
 
