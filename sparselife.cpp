@@ -1,5 +1,4 @@
 #include <map>
-#include <iostream>
 
 #include "sparselife.hpp"
 
@@ -107,9 +106,6 @@ SparseLife::ApplyRules(const std::set<SparseLife::Cell> &cellGrid) const
     // Apply the rules of Life
     for (auto nc : neighbourCounts)
     {
-        std::cout << "Neighbour count "
-                  << "(" << nc.first.first << "," << nc.first.second << ") ="
-                  << (int)nc.second << std::endl;
         // Kill off  things with wrong neighbour counts
         if (nc.second < 2 || nc.second > 3)
         {
