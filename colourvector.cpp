@@ -18,10 +18,10 @@ ColourVector::ColourVector(const float kx,
 unsigned char
 ColourVector::GetColour(const unsigned int ix, const unsigned int iy, const unsigned int itCount) const
 {
-    float positionPhase = (ix * this->kx) + (iy + this->ky);
-    float timePhase = omega * itCount;
+    float positionPhase = (ix * this->kx) + (iy * this->ky);
+    float timePhase = this->omega * itCount;
 
     float raw = sinf(positionPhase - timePhase);
 
-    return offset + A * raw;
+    return this->offset + (this->A * raw);
 }

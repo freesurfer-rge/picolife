@@ -80,9 +80,9 @@ LEDImage CreateSquareDiagonal()
     return result;
 }
 
-ColourVector rV(0.2f, 0.3f, 0.01f, 5, 10);
-ColourVector gV(0.1f, -0.3f, 0.03f, 6, 8);
-ColourVector bV(-0.2f, 0.3f, 0.02f, 4, 6);
+ColourVector rV(0.2f, 0.3f, 0.1f, 4, 6);
+ColourVector gV(0.1f, -0.3f, 0.3f, 4, 8);
+ColourVector bV(-0.2f, 0.2f, 0.5f, 6, 7);
 
 LEDImage ImageFromSparseLife(const SparseLife &grid, const unsigned long itCount)
 {
@@ -101,6 +101,28 @@ LEDImage ImageFromSparseLife(const SparseLife &grid, const unsigned long itCount
     return result;
 }
 
+void SetInitialState(SparseLife &initialGrid)
+{
+    {
+        auto cellStream = std::stringstream(coeShipCells);
+        CellPattern cp;
+        cp.LoadFromStream(cellStream);
+        cp.Translate(2, 4);
+        cp.ExchangeXY();
+
+        initialGrid.AddCells(cp.GetCells());
+    }
+
+    {
+        auto cellStream = std::stringstream(dartCells);
+        CellPattern cp;
+        cp.LoadFromStream(cellStream);
+        cp.Translate(16, 8);
+
+        initialGrid.AddCells(cp.GetCells());
+    }
+}
+
 int main()
 {
     stdio_init_all();
@@ -111,14 +133,8 @@ int main()
     // Set up Life Board
     SparseLife grid(LEDArray::nCols, LEDArray::nRows, true, true);
 
-    // Setup a glider
-    auto cellStream = std::stringstream(coeShipCells);
-    CellPattern cp;
-    cp.LoadFromStream(cellStream);
-    cp.Translate(4, 4);
-    cp.ExchangeXY();
-
-    grid.AddCells(cp.GetCells());
+    // Populate the Life board
+    SetInitialState(grid);
 
     std::cout << "Starting core1" << std::endl;
     multicore_launch_core1(core1Entry);
