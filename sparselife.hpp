@@ -15,6 +15,7 @@ public:
     SparseLife(const uint16_t xSize, const uint16_t ySize, const bool xWrap, const bool yWrap);
 
     void AddCell(const Cell cell);
+    void AddCells(const std::set<Cell>& cells);
 
     std::vector<Cell> GetNeighbours(const Cell c) const;
     std::unique_ptr<std::set<Cell>> ApplyRules(const std::set<Cell> &cellGrid) const;

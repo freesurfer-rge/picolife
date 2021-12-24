@@ -27,6 +27,7 @@ add_executable(${PROJECT_NAME}
     ledarray.cpp
     ledimage.cpp
     sparselife.cpp
+    cellpattern.cpp
 )
 
 
