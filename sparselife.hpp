@@ -15,7 +15,9 @@ public:
     void AddCell(const Cell cell);
 
     std::vector<Cell> GetNeighbours(const Cell c) const;
-    std::set<Cell> ApplyRules(const std::set<Cell> &cellGrid) const;
+    std::unique_ptr<std::set<Cell>> ApplyRules(const std::set<Cell> &cellGrid) const;
+
+    void Update();
 
     const uint16_t nx;
     const uint16_t ny;

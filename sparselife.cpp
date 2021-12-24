@@ -71,7 +71,7 @@ int16_t SparseLife::WrapValue(const int16_t v, const uint16_t max) const
     return v;
 }
 
-std::set<SparseLife::Cell>
+std::unique_ptr<std::set<SparseLife::Cell>>
 SparseLife::ApplyRules(const std::set<SparseLife::Cell> &cellGrid) const
 {
     std::map<Cell, uint8_t> neighbourCounts;
@@ -82,11 +82,13 @@ SparseLife::ApplyRules(const std::set<SparseLife::Cell> &cellGrid) const
         auto neighbours = this->GetNeighbours(c);
         for (auto n : neighbours)
         {
+            // Recall that a C++ map will auto initialise
+            // a non-existent entry
             neighbourCounts[n] += 1;
         }
     }
 
-    std::set<Cell> result(cellGrid);
+    auto result = std::make_unique<std::set<Cell>>(cellGrid);
 
     // Apply the rules of Life
     for (auto nc : neighbourCounts)
@@ -95,15 +97,20 @@ SparseLife::ApplyRules(const std::set<SparseLife::Cell> &cellGrid) const
         if (nc.second < 2 || nc.second > 3)
         {
             // Removing a nonexistent item appears harmless...
-            result.erase(nc.first);
+            result->erase(nc.first);
         }
 
         // Add new cells if three neighbours
         if (nc.second == 3)
         {
-            result.emplace(nc.first);
+            result->emplace(nc.first);
         }
     }
 
     return result;
+}
+
+void SparseLife::Update()
+{
+    this->activeCells= this->ApplyRules(*(this->activeCells));
 }
