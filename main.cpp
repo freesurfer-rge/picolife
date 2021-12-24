@@ -1,5 +1,6 @@
-#include <iostream>
 #include <array>
+#include <iostream>
+#include <memory>
 
 #include "pico/multicore.h"
 #include "pico/stdlib.h"
@@ -37,12 +38,12 @@ int main()
     LEDArray *ledArr = new LEDArray(pio0);
 
     // Set up an image
-    Channel *redSq = new Channel();
-    Channel *redTC = new Channel();
-    Channel *greenSq = new Channel();
-    Channel *greenTC = new Channel();
-    Channel *blueSq = new Channel();
-    Channel *blueTC = new Channel();
+    auto redSq = std::make_unique<Channel>();
+    auto redTC = std::make_unique<Channel>();
+    auto greenSq = std::make_unique<Channel>();
+    auto greenTC = std::make_unique<Channel>();
+    auto blueSq = std::make_unique<Channel>();
+    auto blueTC = std::make_unique<Channel>();
 
     redSq->fill(0);
     greenSq->fill(0);
