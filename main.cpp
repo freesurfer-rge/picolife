@@ -94,13 +94,10 @@ int main()
     {
         if (itCount % 2)
         {
-            std::cout << "Sending Test Card " << itCount << std::endl;
             ledArr->UpdateBuffer(redTC, greenTC, blueTC);
         }
         else
         {
-
-            std::cout << "Sending Square " << itCount << std::endl;
             ledArr->UpdateBuffer(redSq, greenSq, blueSq);
         }
         itCount++;
