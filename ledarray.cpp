@@ -17,7 +17,8 @@
 LEDArray::LEDArray(PIO targetPio) : activeBuffer(0),
                                     comms(),
                                     outputBuffer0(),
-                                    outputBuffer1()
+                                    outputBuffer1(),
+                                    rowFrames()
 {
     std::set<uint> outputPins = {
         clk, latch, outputEnable,
@@ -81,15 +82,14 @@ void LEDArray::UpdateBuffer(
     // We send rows out two at a time, separated by 16 rows
     for (unsigned int iRow = 0; iRow < (nRows / 2); ++iRow)
     {
-        std::array<uint32_t, nWordsPerRow * nFrames> rowFrames;
-
+        // Use the rowFrames allocated in the class
         for (unsigned int iFrame = 0; iFrame < nFrames; ++iFrame)
         {
             auto nextRow = this->ConstructRowPair(red, green, blue, iFrame, iRow);
-            std::copy(nextRow.begin(), nextRow.end(), rowFrames.begin() + (iFrame * nWordsPerRow));
+            std::copy(nextRow.begin(), nextRow.end(), this->rowFrames.begin() + (iFrame * nWordsPerRow));
         }
 
-        std::copy(rowFrames.begin(), rowFrames.end(), buffer + (iRow * (nWordsPerRow * nFrames)));
+        std::copy(this->rowFrames.begin(), this->rowFrames.end(), buffer + (iRow * (nWordsPerRow * nFrames)));
     }
 
     // This is safe because the other core will only read the value, and never modify it
