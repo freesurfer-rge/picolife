@@ -1,8 +1,9 @@
 #pragma once
 
-#include <map>
+#include <memory>
 #include <set>
 #include <utility>
+#include <vector>
 
 class SparseLife
 {
@@ -11,7 +12,10 @@ public:
 
     SparseLife(const uint16_t xSize, const uint16_t ySize, const bool xWrap, const bool yWrap);
 
-    std::set<Cell> GetNeighbours(const Cell c);
+    void AddCell(const Cell cell);
+
+    std::vector<Cell> GetNeighbours(const Cell c) const;
+    std::set<Cell> ApplyRules(const std::set<Cell> &cellGrid) const;
 
     const uint16_t nx;
     const uint16_t ny;
@@ -19,4 +23,7 @@ public:
     const bool wrapY;
 
 private:
+    std::unique_ptr<std::set<Cell>> activeCells;
+
+    int16_t WrapValue(const int16_t v, const uint16_t max) const;
 };
