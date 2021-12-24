@@ -11,6 +11,8 @@
 #include "cellpattern.hpp"
 #include "sparselife.hpp"
 
+#include "colourvector.hpp"
+
 #include "ledarray.hpp"
 #include "ledimage.hpp"
 
@@ -78,16 +80,47 @@ LEDImage CreateSquareDiagonal()
     return result;
 }
 
-LEDImage ImageFromSparseLife(const SparseLife &grid)
+ColourVector rV(0.2f, 0.3f, 0.1f, 4, 6);
+ColourVector gV(0.1f, -0.3f, 0.3f, 4, 8);
+ColourVector bV(-0.2f, 0.2f, 0.5f, 6, 7);
+
+LEDImage ImageFromSparseLife(const SparseLife &grid, const unsigned long itCount)
 {
     LEDImage result;
 
     for (auto c : grid.GetCells())
     {
-        result.SetPixel(c.first, c.second, 8, 0, 8);
+        const int16_t ix = c.first;
+        const int16_t iy = c.second;
+        auto r = rV.GetColour(ix, iy, itCount);
+        auto g = gV.GetColour(ix, iy, itCount);
+        auto b = bV.GetColour(ix, iy, itCount);
+        result.SetPixel(ix, iy, r, g, b);
     }
 
     return result;
+}
+
+void SetInitialState(SparseLife &initialGrid)
+{
+    {
+        auto cellStream = std::stringstream(coeShipCells);
+        CellPattern cp;
+        cp.LoadFromStream(cellStream);
+        cp.Translate(2, 4);
+        cp.ExchangeXY();
+
+        initialGrid.AddCells(cp.GetCells());
+    }
+
+    {
+        auto cellStream = std::stringstream(dartCells);
+        CellPattern cp;
+        cp.LoadFromStream(cellStream);
+        cp.Translate(16, 8);
+
+        initialGrid.AddCells(cp.GetCells());
+    }
 }
 
 int main()
@@ -100,14 +133,8 @@ int main()
     // Set up Life Board
     SparseLife grid(LEDArray::nCols, LEDArray::nRows, true, true);
 
-    // Setup a glider
-    auto cellStream = std::stringstream(coeShipCells);
-    CellPattern cp;
-    cp.LoadFromStream(cellStream);
-    cp.Translate(4, 4);
-    cp.ExchangeXY();
-
-    grid.AddCells(cp.GetCells());
+    // Populate the Life board
+    SetInitialState(grid);
 
     std::cout << "Starting core1" << std::endl;
     multicore_launch_core1(core1Entry);
@@ -117,14 +144,15 @@ int main()
     std::cout << "Starting Main Loop" << std::endl;
 
     unsigned long itCount = 0;
-    auto img = ImageFromSparseLife(grid);
+    auto img = ImageFromSparseLife(grid, itCount);
     img.SendToLEDArray(*ledArr);
     sleep_ms(1000);
     while (true)
     {
+        ++itCount;
         auto targetTime = make_timeout_time_ms(100);
         grid.Update();
-        auto nxtImage = ImageFromSparseLife(grid);
+        auto nxtImage = ImageFromSparseLife(grid, itCount);
         nxtImage.SendToLEDArray(*ledArr);
         sleep_until(targetTime);
     }
