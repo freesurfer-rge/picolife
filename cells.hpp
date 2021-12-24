@@ -1,3 +1,4 @@
+#if 0
 const char* gliderCells = R"""(
 !Name: Glider
 !Author: Richard K. Guy
@@ -55,7 +56,7 @@ OO...............
 ..O.O........OOO.
 ....O..........O.
 )""";
-
+#endif
 const char* coeShipCells = R"""(
 !Name: Coe ship
 !Author: Tim Coe

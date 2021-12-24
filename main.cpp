@@ -109,7 +109,7 @@ void SetInitialState(SparseLife &initialGrid)
         cp.LoadFromStream(cellStream);
         cp.Translate(2, 4);
         cp.ExchangeXY();
-
+        std::cout << "Adding cell count " << cp.GetCells().size() << std::endl;
         initialGrid.AddCells(cp.GetCells());
     }
 
@@ -118,6 +118,7 @@ void SetInitialState(SparseLife &initialGrid)
         CellPattern cp;
         cp.LoadFromStream(cellStream);
         cp.Translate(16, 8);
+        cp.FlipY();
         std::cout << "Adding cell count " << cp.GetCells().size() << std::endl;
         initialGrid.AddCells(cp.GetCells());
     }
@@ -126,14 +127,17 @@ void SetInitialState(SparseLife &initialGrid)
 int main()
 {
     stdio_init_all();
+    sleep_ms(1000);
     std::cout << "LED Driver" << std::endl;
 
     LEDArray *ledArr = new LEDArray(pio0);
 
     // Set up Life Board
+    std::cout << "Creating the grid" << std::endl;
     SparseLife grid(LEDArray::nCols, LEDArray::nRows, true, true);
 
     // Populate the Life board
+    std::cout << "Adding initial cells to grid" << std::endl;
     SetInitialState(grid);
 
     std::cout << "Starting core1" << std::endl;
