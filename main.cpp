@@ -104,7 +104,7 @@ int main()
     auto gliderStream = std::stringstream(gliderCells);
     CellPattern cp;
     cp.LoadFromStream(gliderStream);
-    cp.ExchangeXY();
+    cp.FlipX();
 
     grid.AddCells(cp.GetCells());
 

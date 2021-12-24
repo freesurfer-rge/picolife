@@ -1,3 +1,5 @@
+#include <limits>
+
 #include "cellpattern.hpp"
 
 CellPattern::CellPattern() : activeCells(std::make_unique<std::set<CellPattern::Cell>>())
@@ -54,5 +56,27 @@ void CellPattern::ExchangeXY()
     for (auto c : update)
     {
         this->activeCells->emplace(c);
+    }
+}
+
+void CellPattern::FlipX()
+{
+    std::set<CellPattern::Cell> update;
+    int16_t xMax = std::numeric_limits<int16_t>::min();
+
+    for (auto c : *(this->activeCells))
+    {
+        if (c.first > xMax)
+        {
+            xMax = c.first;
+        }
+        update.emplace(Cell(-c.first, c.second));
+    }
+    
+    this->activeCells->clear();
+
+    for (auto c : update)
+    {
+        this->activeCells->emplace(Cell(c.first + xMax, c.second));
     }
 }

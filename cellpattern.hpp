@@ -18,6 +18,7 @@ public:
     void LoadFromStream(std::istream& is);
 
     void ExchangeXY();
+    void FlipX();
 private:
     std::unique_ptr<std::set<Cell>> activeCells;
 
