@@ -1,4 +1,5 @@
 #include <iostream>
+#include <sstream>
 
 #include "pico/multicore.h"
 #include "pico/stdlib.h"
@@ -7,6 +8,7 @@
 #include "pioCommunicator.hpp"
 
 #include "cells.hpp"
+#include "cellpattern.hpp"
 #include "sparselife.hpp"
 
 #include "ledarray.hpp"
@@ -99,19 +101,14 @@ int main()
     SparseLife grid(LEDArray::nCols, LEDArray::nRows, true, true);
 
     // Setup a glider
-    grid.AddCell(SparseLife::Cell(13, 3));
-    grid.AddCell(SparseLife::Cell(14, 3));
-    grid.AddCell(SparseLife::Cell(15, 3));
-    grid.AddCell(SparseLife::Cell(15, 4));
-    grid.AddCell(SparseLife::Cell(14, 5));
+    auto gliderStream = std::stringstream(gliderCells);
+    CellPattern cp;
+    cp.LoadFromStream(gliderStream);
 
-
-    // Setup another glider
-    grid.AddCell(SparseLife::Cell(3, 22));
-    grid.AddCell(SparseLife::Cell(3, 23));
-    grid.AddCell(SparseLife::Cell(3, 24));
-    grid.AddCell(SparseLife::Cell(4, 24));
-    grid.AddCell(SparseLife::Cell(5, 23));
+    for (auto c : cp.GetCells())
+    {
+        grid.AddCell(c);
+    }
 
     std::cout << "Starting core1" << std::endl;
     multicore_launch_core1(core1Entry);

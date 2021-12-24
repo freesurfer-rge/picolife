@@ -1,4 +1,4 @@
-const char* glider = R"""(
+const char* gliderCells = R"""(
 !Name: Glider
 !Author: Richard K. Guy
 !The smallest, most common, and first discovered spaceship.

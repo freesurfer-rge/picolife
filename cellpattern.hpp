@@ -1,7 +1,9 @@
 #pragma once
 
+#include <istream>
 #include <memory>
 #include <set>
+#include <string>
 #include <utility>
 
 class CellPattern
@@ -13,6 +15,9 @@ public:
 
     const std::set<Cell> &GetCells() const;
 
+    void LoadFromStream(std::istream& is);
 private:
     std::unique_ptr<std::set<Cell>> activeCells;
+
+    bool IsComment(const std::string& s) const;
 };
