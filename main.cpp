@@ -1,17 +1,9 @@
 #include <iostream>
-#include <set>
-#include <bitset>
 #include <array>
-#include <algorithm>
-#include <cmath>
 
 #include "pico/multicore.h"
 #include "pico/stdlib.h"
 #include "pico/time.h"
-#include "hardware/pio.h"
-#include "hardware/clocks.h"
-
-#include "led_line.pio.h"
 
 #include "pioCommunicator.hpp"
 
