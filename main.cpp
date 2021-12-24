@@ -104,6 +104,14 @@ int main()
     grid.AddCell(SparseLife::Cell(15, 4));
     grid.AddCell(SparseLife::Cell(14, 5));
 
+
+    // Setup another glider
+    grid.AddCell(SparseLife::Cell(3, 22));
+    grid.AddCell(SparseLife::Cell(3, 23));
+    grid.AddCell(SparseLife::Cell(3, 24));
+    grid.AddCell(SparseLife::Cell(4, 24));
+    grid.AddCell(SparseLife::Cell(5, 23));
+
     std::cout << "Starting core1" << std::endl;
     multicore_launch_core1(core1Entry);
     std::cout << "Sending address of array object" << std::endl;
@@ -117,10 +125,8 @@ int main()
     sleep_ms(1000);
     while (true)
     {
-        auto targetTime = make_timeout_time_ms(200);
-        std::cout << "Starting update" << std::endl;
+        auto targetTime = make_timeout_time_ms(100);
         grid.Update();
-        std::cout << "Update complete" << std::endl;
         auto nxtImage = ImageFromSparseLife(grid);
         nxtImage.SendToLEDArray(*ledArr);
         sleep_until(targetTime);
