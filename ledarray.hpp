@@ -33,9 +33,6 @@ private:
 
     std::array<uint32_t, (nRows / 2) * (nWordsPerRow * nFrames)> outputBuffer0, outputBuffer1;
 
-    // Used internally, but want to only allocate once
-    std::array<uint32_t, nWordsPerRow * nFrames> rowFrames;
-
     bool is_pixel_on(const uint8_t value, const unsigned int iFrame) const;
     std::array<uint32_t, LEDArray::nWordsPerRow> ConstructRowPair(
         const std::array<uint8_t, LEDArray::nCols * LEDArray::nRows> &red,
