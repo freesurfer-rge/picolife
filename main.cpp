@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <cmath>
 
+#include "pico/multicore.h"
 #include "pico/stdlib.h"
 #include "hardware/pio.h"
 #include "hardware/clocks.h"
@@ -14,6 +15,18 @@
 #include "pioCommunicator.hpp"
 
 #include "ledarray.hpp"
+
+void core1Entry()
+{
+    uint32_t fifo_value = multicore_fifo_pop_blocking();
+    LEDArray* ledArr = reinterpret_cast<LEDArray*>(fifo_value);
+
+    while(true)
+    {
+        ledArr->SendBuffer();
+    }
+}
+
 
 uint8_t value_for_row(const unsigned int iRow)
 {
@@ -66,27 +79,29 @@ int main()
             blueSq[ix + (ledArr->nCols * iy)] = ((ix) <= iy) * value_for_row(iy);
         }
     }
+    std::cout << "Starting core1" << std::endl;
+    multicore_launch_core1(core1Entry);
+    std::cout << "Sending address of array object" << std::endl;
+    multicore_fifo_push_blocking(reinterpret_cast<uint32_t>(ledArr));
 
     std::cout << "Starting Main Loop" << std::endl;
 
     unsigned long itCount = 0;
     while (true)
     {
-        // std::cout << "PIO running " << itCount << std::endl;
-        ledArr->SendBuffer();
-        itCount++;
-        if ((itCount / 100) % 2)
+        if (itCount % 2)
         {
-            // std::cout << "Sending Test Card " << itCount << std::endl;
+            std::cout << "Sending Test Card " << itCount << std::endl;
             ledArr->UpdateBuffer(redTC, greenTC, blueTC);
         }
         else
         {
 
-            // std::cout << "Sending Square " << itCount << std::endl;
+            std::cout << "Sending Square " << itCount << std::endl;
             ledArr->UpdateBuffer(redSq, greenSq, blueSq);
         }
-        // sleep_ms(1);
+        itCount++;
+        sleep_ms(1000);
     }
 
     return 0;
