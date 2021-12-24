@@ -1,4 +1,5 @@
 #include <map>
+#include <iostream>
 
 #include "sparselife.hpp"
 
@@ -19,8 +20,7 @@ void SparseLife::AddCell(const SparseLife::Cell cell)
     this->activeCells->emplace(cell);
 }
 
-
-void SparseLife::AddCells(const std::set<SparseLife::Cell>& cells)
+void SparseLife::AddCells(const std::set<SparseLife::Cell> &cells)
 {
     this->activeCells->insert(cells.begin(), cells.end());
 }
@@ -82,9 +82,17 @@ SparseLife::ApplyRules(const std::set<SparseLife::Cell> &cellGrid) const
 {
     std::map<Cell, uint8_t> neighbourCounts;
 
+    // Have to add cells initially or lone
+    // cells can't be deleted
+    for( auto c: cellGrid)
+    {
+        neighbourCounts[c] = 0;
+    }
+
     // Find all the neighbour counts
     for (auto c : cellGrid)
     {
+
         auto neighbours = this->GetNeighbours(c);
         for (auto n : neighbours)
         {
@@ -99,6 +107,9 @@ SparseLife::ApplyRules(const std::set<SparseLife::Cell> &cellGrid) const
     // Apply the rules of Life
     for (auto nc : neighbourCounts)
     {
+        std::cout << "Neighbour count "
+                  << "(" << nc.first.first << "," << nc.first.second << ") ="
+                  << (int)nc.second << std::endl;
         // Kill off  things with wrong neighbour counts
         if (nc.second < 2 || nc.second > 3)
         {
