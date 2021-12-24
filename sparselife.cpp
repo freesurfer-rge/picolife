@@ -19,6 +19,12 @@ void SparseLife::AddCell(const SparseLife::Cell cell)
     this->activeCells->emplace(cell);
 }
 
+
+void SparseLife::AddCells(const std::set<SparseLife::Cell>& cells)
+{
+    this->activeCells->insert(cells.begin(), cells.end());
+}
+
 std::vector<SparseLife::Cell>
 SparseLife::GetNeighbours(const SparseLife::Cell c) const
 {

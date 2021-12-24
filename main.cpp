@@ -106,10 +106,7 @@ int main()
     cp.LoadFromStream(gliderStream);
     cp.ExchangeXY();
 
-    for (auto c : cp.GetCells())
-    {
-        grid.AddCell(c);
-    }
+    grid.AddCells(cp.GetCells());
 
     std::cout << "Starting core1" << std::endl;
     multicore_launch_core1(core1Entry);
