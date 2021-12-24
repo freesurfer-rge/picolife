@@ -55,3 +55,18 @@ OO...............
 ..O.O........OOO.
 ....O..........O.
 )""";
+
+const char* coeShipCells = R"""(
+!Name: Coe ship
+!Author: Tim Coe
+!A puffer engine discovered in October 1995.
+....OOOOOO
+..OO.....O
+OO.O.....O
+....O...O
+......O
+......OO
+.....OOOO
+.....OO.OO
+.......OO
+)""";
