@@ -1,6 +1,4 @@
-#include <array>
 #include <iostream>
-#include <memory>
 
 #include "pico/multicore.h"
 #include "pico/stdlib.h"
@@ -9,6 +7,7 @@
 #include "pioCommunicator.hpp"
 
 #include "ledarray.hpp"
+#include "ledimage.hpp"
 
 void core1Entry()
 {
@@ -17,7 +16,7 @@ void core1Entry()
 
     while (true)
     {
-        auto targetTime = make_timeout_time_ms(10);
+        auto targetTime = make_timeout_time_ms(5);
         ledArr->SendBuffer();
         sleep_until(targetTime);
     }
@@ -28,29 +27,9 @@ uint8_t value_for_row(const unsigned int iRow)
     return iRow / 2;
 }
 
-typedef std::array<uint8_t, 32 * 32> Channel;
-
-int main()
+LEDImage CreateTestCard()
 {
-    stdio_init_all();
-    std::cout << "LED Driver" << std::endl;
-
-    LEDArray *ledArr = new LEDArray(pio0);
-
-    // Set up an image
-    auto redSq = std::make_unique<Channel>();
-    auto redTC = std::make_unique<Channel>();
-    auto greenSq = std::make_unique<Channel>();
-    auto greenTC = std::make_unique<Channel>();
-    auto blueSq = std::make_unique<Channel>();
-    auto blueTC = std::make_unique<Channel>();
-
-    redSq->fill(0);
-    greenSq->fill(0);
-    blueSq->fill(0);
-    redTC->fill(0);
-    greenTC->fill(0);
-    blueTC->fill(0);
+    LEDImage result;
 
     for (unsigned int iSquare = 0; iSquare < 64; iSquare++)
     {
@@ -64,22 +43,47 @@ int main()
                 unsigned int idxX = sx * 4 + ix;
                 unsigned int idxY = sy * 4 + iy;
 
-                const unsigned int linearIdx = (ledArr->nCols * idxY) + idxX;
-                redTC->at(linearIdx) = (iSquare & 1) ? value_for_row(idxY) : 0;
-                greenTC->at(linearIdx) = (iSquare & 2) ? value_for_row(idxY) : 0;
-                blueTC->at(linearIdx) = (iSquare & 4) ? value_for_row(idxY) : 0;
+                uint8_t r = (iSquare & 1) ? value_for_row(idxY) : 0;
+                uint8_t g = (iSquare & 2) ? value_for_row(idxY) : 0;
+                uint8_t b = (iSquare & 4) ? value_for_row(idxY) : 0;
+                result.SetPixel(idxX, idxY, r, g, b);
             }
         }
     }
 
-    for (unsigned int iy = 0; iy < ledArr->nRows; ++iy)
+    return result;
+}
+
+LEDImage CreateSquareDiagonal()
+{
+    LEDImage result;
+
+    for (unsigned int iy = 0; iy < LEDArray::nRows; ++iy)
     {
-        for (unsigned int ix = 0; ix < ledArr->nCols; ++ix)
+        for (unsigned int ix = 0; ix < LEDArray::nCols; ++ix)
         {
-            redSq->at(ix + (ledArr->nCols * iy)) = ledArr->nFrames - value_for_row(iy);
-            blueSq->at(ix + (ledArr->nCols * iy)) = ((ix) <= iy) * value_for_row(iy);
+            uint8_t r = LEDArray::nFrames - value_for_row(iy);
+            uint8_t g = ((LEDArray::nCols - 1) - ix == iy) ? 255 : 0;
+            uint8_t b = ((ix) <= iy) * value_for_row(iy);
+
+            result.SetPixel(ix, iy, r, g, b);
         }
     }
+
+    return result;
+}
+
+int main()
+{
+    stdio_init_all();
+    std::cout << "LED Driver" << std::endl;
+
+    LEDArray *ledArr = new LEDArray(pio0);
+
+    // Set up images
+    LEDImage testCard = CreateTestCard();
+    LEDImage squareDiag = CreateSquareDiagonal();
+
     std::cout << "Starting core1" << std::endl;
     multicore_launch_core1(core1Entry);
     std::cout << "Sending address of array object" << std::endl;
@@ -92,11 +96,11 @@ int main()
     {
         if (itCount % 2)
         {
-            ledArr->UpdateBuffer(*redTC, *greenTC, *blueTC);
+            testCard.SendToLEDArray(*ledArr);
         }
         else
         {
-            ledArr->UpdateBuffer(*redSq, *greenSq, *blueSq);
+            squareDiag.SendToLEDArray(*ledArr);
         }
         itCount++;
         sleep_ms(1000);

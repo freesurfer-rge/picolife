@@ -167,6 +167,7 @@ void LEDArray::SendBuffer()
             sleep_us(1);
         }
     }
+    this->DisableDisplay();
 }
 
 void LEDArray::EnableDisplay() const

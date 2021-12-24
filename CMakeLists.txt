@@ -25,6 +25,7 @@ add_executable(${PROJECT_NAME}
     main.cpp
     pioCommunicator.cpp
     ledarray.cpp
+    ledimage.cpp
 )
 
 
