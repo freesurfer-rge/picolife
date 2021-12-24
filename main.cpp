@@ -63,7 +63,7 @@ LEDImage CreateSquareDiagonal()
         for (unsigned int ix = 0; ix < LEDArray::nCols; ++ix)
         {
             uint8_t r = LEDArray::nFrames - value_for_row(iy);
-            uint8_t g = 0;
+            uint8_t g = ((LEDArray::nCols - 1) - ix == iy) ? 255 : 0;
             uint8_t b = ((ix) <= iy) * value_for_row(iy);
 
             result.SetPixel(ix, iy, r, g, b);
