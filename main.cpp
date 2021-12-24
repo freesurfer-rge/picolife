@@ -16,7 +16,7 @@ void core1Entry()
 
     while (true)
     {
-        auto targetTime = make_timeout_time_ms(10);
+        auto targetTime = make_timeout_time_ms(5);
         ledArr->SendBuffer();
         sleep_until(targetTime);
     }
