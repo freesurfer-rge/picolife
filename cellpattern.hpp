@@ -19,6 +19,7 @@ public:
 
     void ExchangeXY();
     void FlipX();
+    void FlipY();
 
     void Translate(const int16_t dx, const int16_t dy);
 private:

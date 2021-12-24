@@ -52,11 +52,7 @@ void CellPattern::ExchangeXY()
     }
 
     this->activeCells->clear();
-
-    for (auto c : update)
-    {
-        this->activeCells->emplace(c);
-    }
+    this->activeCells->insert(update.begin(), update.end());
 }
 
 void CellPattern::FlipX()
@@ -78,6 +74,28 @@ void CellPattern::FlipX()
     for (auto c : update)
     {
         this->activeCells->emplace(Cell(c.first + xMax, c.second));
+    }
+}
+
+void CellPattern::FlipY()
+{
+    std::set<CellPattern::Cell> update;
+    int16_t yMax = std::numeric_limits<int16_t>::min();
+
+    for (auto c : *(this->activeCells))
+    {
+        if (c.second > yMax)
+        {
+            yMax = c.second;
+        }
+        update.emplace(Cell(c.first, -c.second));
+    }
+
+    this->activeCells->clear();
+
+    for (auto c : update)
+    {
+        this->activeCells->emplace(Cell(c.first, c.second+yMax));
     }
 }
 
