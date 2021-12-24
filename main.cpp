@@ -11,6 +11,8 @@
 #include "cellpattern.hpp"
 #include "sparselife.hpp"
 
+#include "colourvector.hpp"
+
 #include "ledarray.hpp"
 #include "ledimage.hpp"
 
@@ -78,7 +80,7 @@ LEDImage CreateSquareDiagonal()
     return result;
 }
 
-LEDImage ImageFromSparseLife(const SparseLife &grid)
+LEDImage ImageFromSparseLife(const SparseLife &grid, const unsigned long itCount)
 {
     LEDImage result;
 
@@ -117,14 +119,15 @@ int main()
     std::cout << "Starting Main Loop" << std::endl;
 
     unsigned long itCount = 0;
-    auto img = ImageFromSparseLife(grid);
+    auto img = ImageFromSparseLife(grid, itCount);
     img.SendToLEDArray(*ledArr);
     sleep_ms(1000);
     while (true)
     {
+        ++itCount;
         auto targetTime = make_timeout_time_ms(100);
         grid.Update();
-        auto nxtImage = ImageFromSparseLife(grid);
+        auto nxtImage = ImageFromSparseLife(grid, itCount);
         nxtImage.SendToLEDArray(*ledArr);
         sleep_until(targetTime);
     }

@@ -28,6 +28,7 @@ add_executable(${PROJECT_NAME}
     ledimage.cpp
     sparselife.cpp
     cellpattern.cpp
+    colourvector.cpp
 )
 
 
