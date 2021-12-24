@@ -114,11 +114,11 @@ void SetInitialState(SparseLife &initialGrid)
     }
 
     {
-        auto cellStream = std::stringstream(dartCells);
+        auto cellStream = std::stringstream(fireShipCells);
         CellPattern cp;
         cp.LoadFromStream(cellStream);
         cp.Translate(16, 8);
-
+        std::cout << "Adding cell count " << cp.GetCells().size() << std::endl;
         initialGrid.AddCells(cp.GetCells());
     }
 }
