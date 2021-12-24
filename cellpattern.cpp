@@ -72,11 +72,23 @@ void CellPattern::FlipX()
         }
         update.emplace(Cell(-c.first, c.second));
     }
-    
+
     this->activeCells->clear();
 
     for (auto c : update)
     {
         this->activeCells->emplace(Cell(c.first + xMax, c.second));
     }
+}
+
+void CellPattern::Translate(const int16_t dx, const int16_t dy)
+{
+    std::set<CellPattern::Cell> update;
+
+    for (auto c : *(this->activeCells))
+    {
+        update.emplace(Cell(c.first+dx, c.second+dx));
+    }
+    this->activeCells->clear();
+    this->activeCells->insert(update.begin(), update.end());
 }

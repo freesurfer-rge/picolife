@@ -19,6 +19,8 @@ public:
 
     void ExchangeXY();
     void FlipX();
+
+    void Translate(const int16_t dx, const int16_t dy);
 private:
     std::unique_ptr<std::set<Cell>> activeCells;
 
