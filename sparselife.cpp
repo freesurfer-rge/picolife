@@ -112,5 +112,10 @@ SparseLife::ApplyRules(const std::set<SparseLife::Cell> &cellGrid) const
 
 void SparseLife::Update()
 {
-    this->activeCells= this->ApplyRules(*(this->activeCells));
+    this->activeCells = this->ApplyRules(*(this->activeCells));
+}
+
+const std::set<SparseLife::Cell> &SparseLife::GetCells() const
+{
+    return *(this->activeCells);
 }

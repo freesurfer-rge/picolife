@@ -19,6 +19,8 @@ public:
 
     void Update();
 
+    const std::set<Cell>& GetCells() const;
+
     const uint16_t nx;
     const uint16_t ny;
     const bool wrapX;
