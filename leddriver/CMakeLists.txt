@@ -9,7 +9,9 @@ target_include_directories(leddriver
 
 target_link_libraries(leddriver
   PUBLIC pico_stdlib
-  PUBLIC hardware_pio)
+  PUBLIC hardware_pio
+  PUBLIC pico_multicore
+)
 
 add_subdirectory(src)
 add_subdirectory(apps)

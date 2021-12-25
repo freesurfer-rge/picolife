@@ -1,7 +1,6 @@
 #include <iostream>
 #include <sstream>
 
-#include "pico/multicore.h"
 #include "pico/stdlib.h"
 #include "pico/time.h"
 
@@ -13,19 +12,8 @@
 
 #include "leddriver/ledarray.hpp"
 #include "leddriver/ledimage.hpp"
+#include "leddriver/utility.hpp"
 
-void core1Entry()
-{
-    uint32_t fifo_value = multicore_fifo_pop_blocking();
-    LEDDriver::LEDArray *ledArr = reinterpret_cast<LEDDriver::LEDArray *>(fifo_value);
-
-    while (true)
-    {
-        auto targetTime = make_timeout_time_ms(5);
-        ledArr->SendBuffer();
-        sleep_until(targetTime);
-    }
-}
 
 ColourVector rV(0.2f, 0.3f, 0.1f, 4, 6);
 ColourVector gV(0.1f, -0.3f, 0.3f, 4, 8);
@@ -88,9 +76,7 @@ int main()
     SetInitialState(grid);
 
     std::cout << "Starting core1" << std::endl;
-    multicore_launch_core1(core1Entry);
-    std::cout << "Sending address of array object" << std::endl;
-    multicore_fifo_push_blocking(reinterpret_cast<uint32_t>(&ledArr));
+    LEDDriver::LaunchOnCore1(&ledArr, 5);
 
     std::cout << "Starting Main Loop" << std::endl;
 
