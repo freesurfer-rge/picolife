@@ -12,3 +12,4 @@ target_link_libraries(leddriver
   PUBLIC hardware_pio)
 
 add_subdirectory(src)
+add_subdirectory(apps)
