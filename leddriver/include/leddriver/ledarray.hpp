@@ -2,6 +2,7 @@
 
 #include <array>
 #include <atomic>
+#include <memory>
 
 #include "hardware/pio.h"
 
@@ -29,11 +30,13 @@ namespace LEDDriver
 
         void SendBuffer();
 
+        typedef std::array<uint32_t, (nRows / 2) * (nWordsPerRow * nFrames)> Buffer;
+
     private:
         std::atomic<unsigned char> activeBuffer;
         LEDDriver::PIOCommunicator comms;
 
-        std::array<uint32_t, (nRows / 2) * (nWordsPerRow * nFrames)> outputBuffer0, outputBuffer1;
+        std::unique_ptr<Buffer> outputBuffer0, outputBuffer1;
 
         bool is_pixel_on(const uint8_t value, const unsigned int iFrame) const;
         std::array<uint32_t, LEDArray::nWordsPerRow> ConstructRowPair(
