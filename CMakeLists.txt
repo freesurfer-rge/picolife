@@ -42,6 +42,7 @@ target_link_libraries(${PROJECT_NAME}
     pico_stdlib
     hardware_pio
     pico_multicore
+    sparselife
 )
 
 pico_enable_stdio_usb(${PROJECT_NAME} 1)
