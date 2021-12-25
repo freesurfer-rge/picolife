@@ -6,5 +6,6 @@ pico_generate_pio_header(leddriver
 
 list(APPEND srcs ${CMAKE_CURRENT_SOURCE_DIR}/pioCommunicator.cpp)
 list(APPEND srcs ${CMAKE_CURRENT_SOURCE_DIR}/ledarray.cpp)
+list(APPEND srcs ${CMAKE_CURRENT_SOURCE_DIR}/ledimage.cpp)
 
 target_sources(leddriver PRIVATE ${srcs})

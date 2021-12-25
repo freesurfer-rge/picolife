@@ -13,7 +13,7 @@
 #include "colourvector.hpp"
 
 #include "leddriver/ledarray.hpp"
-#include "ledimage.hpp"
+#include "leddriver/ledimage.hpp"
 
 void core1Entry()
 {
@@ -33,9 +33,9 @@ uint8_t value_for_row(const unsigned int iRow)
     return iRow / 2;
 }
 
-LEDImage CreateTestCard()
+LEDDriver::LEDImage CreateTestCard()
 {
-    LEDImage result;
+    LEDDriver::LEDImage result;
 
     for (unsigned int iSquare = 0; iSquare < 64; iSquare++)
     {
@@ -60,9 +60,9 @@ LEDImage CreateTestCard()
     return result;
 }
 
-LEDImage CreateSquareDiagonal()
+LEDDriver::LEDImage CreateSquareDiagonal()
 {
-    LEDImage result;
+    LEDDriver::LEDImage result;
 
     for (unsigned int iy = 0; iy < LEDDriver::LEDArray::nRows; ++iy)
     {
@@ -83,9 +83,9 @@ ColourVector rV(0.2f, 0.3f, 0.1f, 4, 6);
 ColourVector gV(0.1f, -0.3f, 0.3f, 4, 8);
 ColourVector bV(-0.2f, 0.2f, 0.5f, 6, 7);
 
-LEDImage ImageFromSparseLife(const SparseLife::SparseLife &grid, const unsigned long itCount)
+LEDDriver::LEDImage ImageFromSparseLife(const SparseLife::SparseLife &grid, const unsigned long itCount)
 {
-    LEDImage result;
+    LEDDriver::LEDImage result;
 
     for (auto c : grid.GetCells())
     {
@@ -119,7 +119,7 @@ void SetInitialState(SparseLife::SparseLife &initialGrid)
         cp.Translate(16, 8);
         cp.FlipY();
         std::cout << "Adding cell count " << cp.GetCells().size() << std::endl;
-        // initialGrid.AddCells(cp.GetCells());
+        initialGrid.AddCells(cp.GetCells());
     }
 }
 

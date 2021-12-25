@@ -23,7 +23,6 @@ pico_sdk_init()
 
 add_executable(${PROJECT_NAME}
     main.cpp
-    ledimage.cpp
     colourvector.cpp
 )
 
