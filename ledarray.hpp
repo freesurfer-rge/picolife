@@ -5,7 +5,7 @@
 
 #include "hardware/pio.h"
 
-#include "pioCommunicator.hpp"
+#include "leddriver/pioCommunicator.hpp"
 
 class LEDArray
 {
@@ -29,7 +29,7 @@ public:
 
 private:
     std::atomic<unsigned char> activeBuffer;
-    PIOCommunicator comms;
+    LEDDriver::PIOCommunicator comms;
 
     std::array<uint32_t, (nRows / 2) * (nWordsPerRow * nFrames)> outputBuffer0, outputBuffer1;
 

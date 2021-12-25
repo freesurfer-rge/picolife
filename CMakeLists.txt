@@ -23,7 +23,6 @@ pico_sdk_init()
 
 add_executable(${PROJECT_NAME}
     main.cpp
-    pioCommunicator.cpp
     ledarray.cpp
     ledimage.cpp
     colourvector.cpp
@@ -41,9 +40,11 @@ target_link_libraries(${PROJECT_NAME}
     hardware_pio
     pico_multicore
     sparselife
+    leddriver
 )
 
 pico_enable_stdio_usb(${PROJECT_NAME} 1)
 pico_enable_stdio_uart(${PROJECT_NAME} 0)
 
+add_subdirectory(leddriver)
 add_subdirectory(sparselife)
