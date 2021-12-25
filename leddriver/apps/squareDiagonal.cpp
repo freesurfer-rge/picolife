@@ -35,14 +35,14 @@ int main()
     sleep_ms(1000);
     std::cout << "LED Driver SquareDiagonal" << std::endl;
 
-    LEDDriver::LEDArray *ledArr = new LEDDriver::LEDArray(pio0);
+    LEDDriver::LEDArray ledArr(pio0);
 
     auto img = CreateSquareDiagonal();
-    img.SendToLEDArray(*ledArr);
+    img.SendToLEDArray(ledArr);
     while (true)
     {
         auto targetTime = make_timeout_time_ms(5);
-        ledArr->SendBuffer();
+        ledArr.SendBuffer();
         sleep_until(targetTime);
     }
 }
