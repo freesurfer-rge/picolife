@@ -26,8 +26,6 @@ add_executable(${PROJECT_NAME}
     pioCommunicator.cpp
     ledarray.cpp
     ledimage.cpp
-    sparselife.cpp
-    cellpattern.cpp
     colourvector.cpp
 )
 

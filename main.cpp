@@ -8,8 +8,8 @@
 #include "pioCommunicator.hpp"
 
 #include "cells.hpp"
-#include "cellpattern.hpp"
-#include "sparselife.hpp"
+#include "sparselife/cellpattern.hpp"
+#include "sparselife/sparselife.hpp"
 
 #include "colourvector.hpp"
 
@@ -84,7 +84,7 @@ ColourVector rV(0.2f, 0.3f, 0.1f, 4, 6);
 ColourVector gV(0.1f, -0.3f, 0.3f, 4, 8);
 ColourVector bV(-0.2f, 0.2f, 0.5f, 6, 7);
 
-LEDImage ImageFromSparseLife(const SparseLife &grid, const unsigned long itCount)
+LEDImage ImageFromSparseLife(const SparseLife::SparseLife &grid, const unsigned long itCount)
 {
     LEDImage result;
 
@@ -101,11 +101,11 @@ LEDImage ImageFromSparseLife(const SparseLife &grid, const unsigned long itCount
     return result;
 }
 
-void SetInitialState(SparseLife &initialGrid)
+void SetInitialState(SparseLife::SparseLife &initialGrid)
 {
     {
         auto cellStream = std::stringstream(coeShipCells);
-        CellPattern cp;
+        SparseLife::CellPattern cp;
         cp.LoadFromStream(cellStream);
         cp.Translate(2, 4);
         cp.ExchangeXY();
@@ -115,7 +115,7 @@ void SetInitialState(SparseLife &initialGrid)
 
     {
         auto cellStream = std::stringstream(fireShipCells);
-        CellPattern cp;
+        SparseLife::CellPattern cp;
         cp.LoadFromStream(cellStream);
         cp.Translate(16, 8);
         cp.FlipY();
@@ -134,7 +134,7 @@ int main()
 
     // Set up Life Board
     std::cout << "Creating the grid" << std::endl;
-    SparseLife grid(LEDArray::nCols, LEDArray::nRows, true, true);
+    SparseLife::SparseLife grid(LEDArray::nCols, LEDArray::nRows, true, true);
 
     // Populate the Life board
     std::cout << "Adding initial cells to grid" << std::endl;
