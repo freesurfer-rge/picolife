@@ -28,31 +28,6 @@ void core1Entry()
     }
 }
 
-uint8_t value_for_row(const unsigned int iRow)
-{
-    return iRow / 2;
-}
-
-
-LEDDriver::LEDImage CreateSquareDiagonal()
-{
-    LEDDriver::LEDImage result;
-
-    for (unsigned int iy = 0; iy < LEDDriver::LEDArray::nRows; ++iy)
-    {
-        for (unsigned int ix = 0; ix < LEDDriver::LEDArray::nCols; ++ix)
-        {
-            uint8_t r = LEDDriver::LEDArray::nFrames - value_for_row(iy);
-            uint8_t g = ((LEDDriver::LEDArray::nCols - 1) - ix == iy) ? 255 : 0;
-            uint8_t b = ((ix) <= iy) * value_for_row(iy);
-
-            result.SetPixel(ix, iy, r, g, b);
-        }
-    }
-
-    return result;
-}
-
 ColourVector rV(0.2f, 0.3f, 0.1f, 4, 6);
 ColourVector gV(0.1f, -0.3f, 0.3f, 4, 8);
 ColourVector bV(-0.2f, 0.2f, 0.5f, 6, 7);
