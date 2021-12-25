@@ -9,8 +9,6 @@ namespace LEDDriver
     public:
         PIO pio;
         uint sm;
-        uint pin_clk;
-        uint pin_data;
 
         void write32blocking(const uint32_t *src, const size_t n);
 

@@ -5,7 +5,6 @@
 #include "pico/stdlib.h"
 #include "pico/time.h"
 
-
 #include "cells.hpp"
 #include "sparselife/cellpattern.hpp"
 #include "sparselife/sparselife.hpp"

@@ -60,8 +60,6 @@ namespace LEDDriver
 
         this->comms.pio = targetPio;
         this->comms.sm = sm;
-        this->comms.pin_clk = ControlPins::clk;
-        this->comms.pin_data = firstColourPin;
     }
 
     void LEDArray::UpdateBuffer(
