@@ -77,7 +77,7 @@ int main()
     sleep_ms(1000);
     std::cout << "LED Driver" << std::endl;
 
-    LEDDriver::LEDArray *ledArr = new LEDDriver::LEDArray(pio0);
+    LEDDriver::LEDArray ledArr(pio0);
 
     // Set up Life Board
     std::cout << "Creating the grid" << std::endl;
@@ -90,13 +90,13 @@ int main()
     std::cout << "Starting core1" << std::endl;
     multicore_launch_core1(core1Entry);
     std::cout << "Sending address of array object" << std::endl;
-    multicore_fifo_push_blocking(reinterpret_cast<uint32_t>(ledArr));
+    multicore_fifo_push_blocking(reinterpret_cast<uint32_t>(&ledArr));
 
     std::cout << "Starting Main Loop" << std::endl;
 
     unsigned long itCount = 0;
     auto img = ImageFromSparseLife(grid, itCount);
-    img.SendToLEDArray(*ledArr);
+    img.SendToLEDArray(ledArr);
     sleep_ms(1000);
     while (true)
     {
@@ -104,7 +104,7 @@ int main()
         auto targetTime = make_timeout_time_ms(100);
         grid.Update();
         auto nxtImage = ImageFromSparseLife(grid, itCount);
-        nxtImage.SendToLEDArray(*ledArr);
+        nxtImage.SendToLEDArray(ledArr);
         sleep_until(targetTime);
     }
 

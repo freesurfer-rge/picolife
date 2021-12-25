@@ -18,8 +18,8 @@ namespace LEDDriver
 {
     LEDArray::LEDArray(PIO targetPio) : activeBuffer(0),
                                         comms(),
-                                        outputBuffer0(),
-                                        outputBuffer1()
+                                        outputBuffer0(std::make_unique<Buffer>()),
+                                        outputBuffer1(std::make_unique<Buffer>())
     {
         std::set<uint> outputPins = {
             clk, latch, outputEnable,
@@ -71,11 +71,11 @@ namespace LEDDriver
         // We will update the buffer not in use
         if (this->activeBuffer.load() == 0)
         {
-            buffer = this->outputBuffer1.data();
+            buffer = this->outputBuffer1->data();
         }
         else
         {
-            buffer = this->outputBuffer0.data();
+            buffer = this->outputBuffer0->data();
         }
 
         // We send rows out two at a time, separated by 16 rows
@@ -147,11 +147,11 @@ namespace LEDDriver
         uint32_t *buffer;
         if (this->activeBuffer.load() == 0)
         {
-            buffer = this->outputBuffer0.data();
+            buffer = this->outputBuffer0->data();
         }
         else
         {
-            buffer = this->outputBuffer1.data();
+            buffer = this->outputBuffer1->data();
         }
 
         for (unsigned int i = 0; i < nRows / 2; i++)
