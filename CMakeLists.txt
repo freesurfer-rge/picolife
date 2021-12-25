@@ -23,15 +23,10 @@ pico_sdk_init()
 
 add_executable(${PROJECT_NAME}
     main.cpp
-    ledarray.cpp
     ledimage.cpp
     colourvector.cpp
 )
 
-
-pico_generate_pio_header(${PROJECT_NAME}
-    ${CMAKE_CURRENT_LIST_DIR}/led_line.pio
-)
 
 pico_add_extra_outputs(${PROJECT_NAME})
 

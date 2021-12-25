@@ -17,13 +17,13 @@ void LEDImage::Clear()
 void LEDImage::SetPixel(const unsigned int ix, const unsigned int iy,
                         const uint8_t r, const uint8_t g, const uint8_t b)
 {
-    const size_t idx = ix + (LEDArray::nCols * iy);
+    const size_t idx = ix + (LEDDriver::LEDArray::nCols * iy);
     this->red->at(idx) = r;
     this->green->at(idx) = g;
     this->blue->at(idx) = b;
 }
 
-void LEDImage::SendToLEDArray(LEDArray &target) const
+void LEDImage::SendToLEDArray(LEDDriver::LEDArray &target) const
 {
     target.UpdateBuffer(*(this->red), *(this->green), *(this->blue));
 }

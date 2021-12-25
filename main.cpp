@@ -12,13 +12,13 @@
 
 #include "colourvector.hpp"
 
-#include "ledarray.hpp"
+#include "leddriver/ledarray.hpp"
 #include "ledimage.hpp"
 
 void core1Entry()
 {
     uint32_t fifo_value = multicore_fifo_pop_blocking();
-    LEDArray *ledArr = reinterpret_cast<LEDArray *>(fifo_value);
+    LEDDriver::LEDArray *ledArr = reinterpret_cast<LEDDriver::LEDArray *>(fifo_value);
 
     while (true)
     {
@@ -64,12 +64,12 @@ LEDImage CreateSquareDiagonal()
 {
     LEDImage result;
 
-    for (unsigned int iy = 0; iy < LEDArray::nRows; ++iy)
+    for (unsigned int iy = 0; iy < LEDDriver::LEDArray::nRows; ++iy)
     {
-        for (unsigned int ix = 0; ix < LEDArray::nCols; ++ix)
+        for (unsigned int ix = 0; ix < LEDDriver::LEDArray::nCols; ++ix)
         {
-            uint8_t r = LEDArray::nFrames - value_for_row(iy);
-            uint8_t g = ((LEDArray::nCols - 1) - ix == iy) ? 255 : 0;
+            uint8_t r = LEDDriver::LEDArray::nFrames - value_for_row(iy);
+            uint8_t g = ((LEDDriver::LEDArray::nCols - 1) - ix == iy) ? 255 : 0;
             uint8_t b = ((ix) <= iy) * value_for_row(iy);
 
             result.SetPixel(ix, iy, r, g, b);
@@ -119,7 +119,7 @@ void SetInitialState(SparseLife::SparseLife &initialGrid)
         cp.Translate(16, 8);
         cp.FlipY();
         std::cout << "Adding cell count " << cp.GetCells().size() << std::endl;
-        initialGrid.AddCells(cp.GetCells());
+        // initialGrid.AddCells(cp.GetCells());
     }
 }
 
@@ -129,11 +129,11 @@ int main()
     sleep_ms(1000);
     std::cout << "LED Driver" << std::endl;
 
-    LEDArray *ledArr = new LEDArray(pio0);
+    LEDDriver::LEDArray *ledArr = new LEDDriver::LEDArray(pio0);
 
     // Set up Life Board
     std::cout << "Creating the grid" << std::endl;
-    SparseLife::SparseLife grid(LEDArray::nCols, LEDArray::nRows, true, true);
+    SparseLife::SparseLife grid(LEDDriver::LEDArray::nCols, LEDDriver::LEDArray::nRows, true, true);
 
     // Populate the Life board
     std::cout << "Adding initial cells to grid" << std::endl;
