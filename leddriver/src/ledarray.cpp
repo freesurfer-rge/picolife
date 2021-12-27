@@ -154,12 +154,31 @@ namespace LEDDriver
             buffer = this->outputBuffer1->data();
         }
 
+#if 1
         for (unsigned int i = 0; i < nRows / 2; i++)
         {
             this->DisableDisplay();
             this->SelectRow(i);
             for (unsigned int iFrame = 0; iFrame < nFrames; ++iFrame)
             {
+                this->DisableDisplay();
+                unsigned int idx = nWordsPerRow * (iFrame + (i * nFrames));
+                this->comms.write32blocking(buffer + idx, nWordsPerRow);
+                this->comms.waitTXdrain();
+                this->EnableDisplay();
+                sleep_us(2);
+            }
+        }
+#else
+        for (unsigned int iFrame = 0; iFrame < nFrames; ++iFrame)
+        {
+            for (unsigned int i = 0; i < nRows / 2; i++)
+            {
+
+                this->DisableDisplay();
+                sleep_us(1);
+                this->SelectRow(i);
+
                 unsigned int idx = nWordsPerRow * (iFrame + (i * nFrames));
                 this->comms.write32blocking(buffer + idx, nWordsPerRow);
                 this->comms.waitTXdrain();
@@ -167,6 +186,7 @@ namespace LEDDriver
                 sleep_us(1);
             }
         }
+#endif
         this->DisableDisplay();
     }
 

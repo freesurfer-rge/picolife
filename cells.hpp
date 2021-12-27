@@ -8,6 +8,17 @@ const char* gliderCells = R"""(
 OOO
 )""";
 
+const char* lightweightSpaceshipCells = R"""(
+!Name: LWSS
+!Author: John Conway
+!The smallest known orthogonally moving spaceship, and the second most common spaceship (after the glider).
+!www.conwaylife.com/wiki/index.php?title=Lightweight_spaceship
+.O..O
+O
+O...O
+OOOO
+)""";
+
 const char* dartCells = R"""(
 !Name: Dart
 !Author: David Bell
@@ -97,4 +108,77 @@ OO........OO
 .OOOOOOOOOO.
 ..OOOOOOOO..
 ....OOOO....
+)""";
+
+const char* lobsterCells = R"""(
+! Lobster (spaceship)
+! Matthias Merzenich
+! https://conwaylife.com/wiki/Lobster_(spaceship)
+! https://conwaylife.com/patterns/83p7h1v1.cells
+...........OOO............
+.............O............
+........OO..O.............
+........OO................
+............OO............
+...........OO.............
+..........O..O............
+..........................
+........O..O..............
+.......O...O..............
+......O.OOO...............
+.....O....................
+.....O.............O.O..OO
+......O.............OO.O.O
+.OO.............OO..O....O
+O..OO..OO......O...O......
+.....O..O......O......OO..
+.........OO....O.O....OO..
+..O...O...O.....O.........
+......OO....O..O..........
+.O.O.....O...OO...........
+OO........O...............
+.....O....O...............
+.......O...O..............
+....OO.....O..............
+....O.....O...............
+)""";
+
+const char* achimsp144Cells = R"""(
+!Name: Achim's p144
+!Author: Achim Flammenkamp
+!Period 144 oscillator found in 1994.
+OO........................OO
+OO........................OO
+..................OO
+.................O..O
+..................OO
+..............O
+.............O.O
+............O...O
+............O..O
+
+............O..O
+...........O...O
+............O.O
+.............O
+........OO
+.......O..O
+........OO
+OO........................OO
+OO........................OO
+)""";
+
+
+const char* queenBeeShuttleCells = R"""(
+!Name: Queen bee shuttle
+!Author: Bill Gosper
+!A period 30 oscillator.
+!www.conwaylife.com/wiki/index.php?title=Queen_bee_shuttle
+.........O
+.......O.O
+......O.O
+OO...O..O...........OO
+OO....O.O...........OO
+.......O.O
+.........O
 )""";
