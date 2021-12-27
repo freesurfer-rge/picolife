@@ -59,7 +59,7 @@ void SetInitialState(SparseLife::SparseLife &initialGrid)
     }
 #else
     {
-        auto cellStream = std::stringstream(lobsterCells);
+        auto cellStream = std::stringstream(achimsp144Cells);
         SparseLife::CellPattern cp;
         cp.LoadFromStream(cellStream);
         cp.Translate(1, 1);
