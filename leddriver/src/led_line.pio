@@ -19,8 +19,7 @@
 
 line_loop:
     out pins 6 side 0 ; Write 6 values for next two LEDs
-    nop side CLK_HIGH ; For some reason, doing this on the previous line causes trouble
-    jmp x-- line_loop side 0
+    jmp x-- line_loop side CLK_HIGH ; Clock out the values
 
     nop side LATCH_HIGH ; Make the output shown
 
