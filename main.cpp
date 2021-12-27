@@ -14,7 +14,6 @@
 #include "leddriver/ledimage.hpp"
 #include "leddriver/utility.hpp"
 
-
 ColourVector rV(0.2f, 0.3f, 0.1f, 4, 6);
 ColourVector gV(0.1f, -0.3f, 0.3f, 4, 8);
 ColourVector bV(-0.2f, 0.2f, 0.5f, 6, 7);
@@ -38,6 +37,7 @@ LEDDriver::LEDImage ImageFromSparseLife(const SparseLife::SparseLife &grid, cons
 
 void SetInitialState(SparseLife::SparseLife &initialGrid)
 {
+#if 0
     {
         auto cellStream = std::stringstream(coeShipCells);
         SparseLife::CellPattern cp;
@@ -57,6 +57,16 @@ void SetInitialState(SparseLife::SparseLife &initialGrid)
         std::cout << "Adding cell count " << cp.GetCells().size() << std::endl;
         initialGrid.AddCells(cp.GetCells());
     }
+#else
+    {
+        auto cellStream = std::stringstream(lobsterCells);
+        SparseLife::CellPattern cp;
+        cp.LoadFromStream(cellStream);
+        cp.Translate(1, 1);
+        std::cout << "Adding cell count " << cp.GetCells().size() << std::endl;
+        initialGrid.AddCells(cp.GetCells());
+    }
+#endif
 }
 
 int main()
