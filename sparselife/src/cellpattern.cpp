@@ -107,7 +107,7 @@ namespace SparseLife
 
         for (auto c : *(this->activeCells))
         {
-            update.emplace(Cell(c.first + dx, c.second + dx));
+            update.emplace(Cell(c.first + dx, c.second + dy));
         }
         this->activeCells->clear();
         this->activeCells->insert(update.begin(), update.end());
