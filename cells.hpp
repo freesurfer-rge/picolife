@@ -8,6 +8,17 @@ const char* gliderCells = R"""(
 OOO
 )""";
 
+const char* lightweightSpaceshipCells = R"""(
+!Name: LWSS
+!Author: John Conway
+!The smallest known orthogonally moving spaceship, and the second most common spaceship (after the glider).
+!www.conwaylife.com/wiki/index.php?title=Lightweight_spaceship
+.O..O
+O
+O...O
+OOOO
+)""";
+
 const char* dartCells = R"""(
 !Name: Dart
 !Author: David Bell
@@ -155,4 +166,19 @@ OO........................OO
 ........OO
 OO........................OO
 OO........................OO
+)""";
+
+
+const char* queenBeeShuttleCells = R"""(
+!Name: Queen bee shuttle
+!Author: Bill Gosper
+!A period 30 oscillator.
+!www.conwaylife.com/wiki/index.php?title=Queen_bee_shuttle
+.........O
+.......O.O
+......O.O
+OO...O..O...........OO
+OO....O.O...........OO
+.......O.O
+.........O
 )""";
