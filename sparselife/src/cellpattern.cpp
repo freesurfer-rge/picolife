@@ -65,7 +65,7 @@ namespace SparseLife
                         if (c == '!')
                         {
                             reachedEnd = true;
-                            if( nextToken.size() > 0)
+                            if (nextToken.size() > 0)
                             {
                                 tokens.push_back(nextToken);
                                 nextToken.clear();
@@ -73,19 +73,19 @@ namespace SparseLife
                         }
                         if (std::isspace(c))
                         {
-                            if (nextToken.size()!=0)
+                            if (nextToken.size() != 0)
                             {
                                 tokens.push_back(nextToken);
                                 nextToken.clear();
                             }
                         }
 
-                        if( std::isdigit(c))
+                        if (std::isdigit(c))
                         {
                             nextToken.push_back(c);
                         }
 
-                        if( c=='b'||c=='o' || c=='$')
+                        if (c == 'b' || c == 'o' || c == '$')
                         {
                             // These characters terminate a token
                             nextToken.push_back(c);
@@ -96,14 +96,48 @@ namespace SparseLife
                 }
             }
         }
-    
+
         // Now, process the tokens into (count, tag) pairs
         std::vector<std::pair<uint16_t, char>> pairList;
-        for( auto t: tokens)
+        for (auto t : tokens)
         {
-            if( t.size() == 1)
+            if (t.size() == 1)
             {
-                pairList.push_back(std::make_pair(1,t.at(0)));
+                pairList.push_back(std::make_pair(1, t.at(0)));
+            }
+            else
+            {
+                const char tag = t.back();
+                t.pop_back();
+                uint16_t count = std::stoi(t);
+                pairList.push_back(std::make_pair(count, tag));
+            }
+        }
+
+        // Finally, process the pairs, inserting the cells
+        uint16_t yCurr = 0;
+        uint16_t xCurr = 0;
+        for (auto p : pairList)
+        {
+            if (p.second == '$')
+            {
+                xCurr = 0;
+                yCurr += p.first;
+            }
+            if (p.second == 'b')
+            {
+                // Dead cell
+                xCurr += p.first;
+            }
+            if (p.second == 'o')
+            {
+                // Live cells
+                for (uint16_t i = 0; i < p.first; ++i)
+                {
+                    auto nxtCell = Cell(xCurr, yCurr);
+                    this->activeCells->emplace(nxtCell);
+                    xCurr++;
+                }
             }
         }
     }
