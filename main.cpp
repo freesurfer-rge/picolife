@@ -57,7 +57,9 @@ void SetInitialState(SparseLife::SparseLife &initialGrid)
         std::cout << "Adding cell count " << cp.GetCells().size() << std::endl;
         initialGrid.AddCells(cp.GetCells());
     }
-#else
+#endif
+
+#if 0
     {
         auto cellStream = std::stringstream(achimsp144Cells);
         SparseLife::CellPattern cp;
@@ -75,6 +77,14 @@ void SetInitialState(SparseLife::SparseLife &initialGrid)
         initialGrid.AddCells(cp.GetCells());
     }
 #endif
+    {
+        auto cellStream = std::stringstream(gliderRLE);
+        SparseLife::CellPattern cp;
+        cp.LoadRLEFromStream(cellStream);
+        cp.Translate(2, 1);
+        std::cout << "Adding cell count " << cp.GetCells().size() << std::endl;
+        initialGrid.AddCells(cp.GetCells());
+    }
 }
 
 int main()
