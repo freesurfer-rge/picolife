@@ -78,10 +78,10 @@ void SetInitialState(SparseLife::SparseLife &initialGrid)
     }
 #endif
     {
-        auto cellStream = std::stringstream(lwssSynthRLE);
+        auto cellStream = std::stringstream(lobsterRLE);
         SparseLife::CellPattern cp;
         cp.LoadRLEFromStream(cellStream);
-        cp.Translate(14, 14);
+        cp.Translate(0, 0);
         std::cout << "Adding cell count " << cp.GetCells().size() << std::endl;
         initialGrid.AddCells(cp.GetCells());
     }
