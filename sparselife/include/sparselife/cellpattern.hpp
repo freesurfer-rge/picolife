@@ -17,6 +17,8 @@ namespace SparseLife
 
         void LoadFromStream(std::istream &is);
 
+        void LoadRLEFromStream(std::istream &is);
+
         void ExchangeXY();
         void FlipX();
         void FlipY();
@@ -27,5 +29,6 @@ namespace SparseLife
         std::unique_ptr<std::set<Cell>> activeCells;
 
         bool IsComment(const std::string &s) const;
+        bool RLEIgnoreLine(const std::string& s) const;
     };
 }

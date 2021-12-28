@@ -8,6 +8,22 @@ const char* gliderCells = R"""(
 OOO
 )""";
 
+const char* gliderRLE = R"""(
+#N Glider
+#O Richard K. Guy
+#C The smallest, most common, and first discovered spaceship. Diagonal, has period 4 and speed c/4.
+#C www.conwaylife.com/wiki/index.php?title=Glider
+x = 3, y = 3, rule = B3/S23
+bob$2bo$3o!
+)""";
+
+const char* lwssSynthRLE = R"""(
+#CSYNTH xq4_6frc costs 3 gliders (true).
+#CLL state-numbering golly
+x = 8, y = 10, rule = B3/S23
+4bo$3bo$3b3o4$6bo$3o2b2o$2bo2bobo$bo!
+)""";
+
 const char* lightweightSpaceshipCells = R"""(
 !Name: LWSS
 !Author: John Conway
