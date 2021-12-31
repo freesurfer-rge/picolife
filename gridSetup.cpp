@@ -15,7 +15,7 @@ void SetInitialState(SparseLife::SparseLife &targetGrid, const int patternSelect
     switch (patternSelect)
     {
     case 0:
-        std::cout << "Adding soup" << std::endl;
+        std::cout << "Creating soup" << std::endl;
         targetGrid.ClearCells();
         {
             auto seed = to_ms_since_boot(get_absolute_time());
@@ -33,7 +33,7 @@ void SetInitialState(SparseLife::SparseLife &targetGrid, const int patternSelect
         break;
 
     case 1:
-        std::cout << "Adding Coe and Fireships" << std::endl;
+        std::cout << "Creating Coe and Fireships" << std::endl;
         targetGrid.ClearCells();
         {
             auto cellStream = std::stringstream(coeShipCells);
@@ -55,7 +55,7 @@ void SetInitialState(SparseLife::SparseLife &targetGrid, const int patternSelect
         break;
 
     case 2:
-        std::cout << "Adding oscillators" << std::endl;
+        std::cout << "Creating oscillators" << std::endl;
         targetGrid.ClearCells();
         {
             auto cellStream = std::stringstream(achimsp144Cells);
@@ -74,7 +74,7 @@ void SetInitialState(SparseLife::SparseLife &targetGrid, const int patternSelect
         break;
 
     case 3:
-        std::cout << "Adding lobster" << std::endl;
+        std::cout << "Creating lobster" << std::endl;
         targetGrid.ClearCells();
         {
             auto cellStream = std::stringstream(lobsterRLE);
@@ -82,6 +82,36 @@ void SetInitialState(SparseLife::SparseLife &targetGrid, const int patternSelect
             cp.LoadRLEFromStream(cellStream);
             cp.Translate(0, 0);
             targetGrid.AddCells(cp.GetCells());
+        }
+        break;
+
+    case 4:
+        std::cout << "Creating LWSS synthesis" << std::endl;
+        targetGrid.ClearCells();
+        {
+            auto cellStream = std::stringstream(lwssSynthRLE);
+            SparseLife::CellPattern cp;
+            cp.LoadRLEFromStream(cellStream);
+            cp.Translate(5, 5);
+            targetGrid.AddCells(cp.GetCells());
+        }
+        break;
+
+    case 9:
+        std::cout << "Inserting some soup" << std::endl;
+        // Note _no_ clearing of the grid
+        {
+            auto seed = to_ms_since_boot(get_absolute_time());
+            std::default_random_engine generator(seed);
+            std::uniform_int_distribution<int> distX(0, targetGrid.nx - 1);
+            std::uniform_int_distribution<int> distY(0, targetGrid.ny - 1);
+            for (auto i = 0; i < 20; ++i)
+            {
+                auto x = distX(generator);
+                auto y = distY(generator);
+
+                targetGrid.AddCell(SparseLife::Cell(x, y));
+            }
         }
         break;
 
