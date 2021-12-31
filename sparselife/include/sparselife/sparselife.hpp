@@ -20,6 +20,8 @@ namespace SparseLife
         void AddCell(const Cell cell);
         void AddCells(const std::set<Cell> &cells);
 
+        void ClearCells();
+
         std::vector<Cell> GetNeighbours(const Cell c) const;
         std::unique_ptr<std::set<Cell>> ApplyRules(const std::set<Cell> &cellGrid) const;
 
