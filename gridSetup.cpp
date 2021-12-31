@@ -1,4 +1,5 @@
 #include <iostream>
+#include <random>
 #include <sstream>
 
 #include "sparselife/cellpattern.hpp"
@@ -12,6 +13,23 @@ void SetInitialState(SparseLife::SparseLife &targetGrid, const int patternSelect
     switch (patternSelect)
     {
     case 0:
+        std::cout << "Adding soup" << std::endl;
+        targetGrid.ClearCells();
+        {
+            std::default_random_engine generator;
+            std::uniform_int_distribution<int> distX(0, targetGrid.nx - 1);
+            std::uniform_int_distribution<int> distY(0, targetGrid.ny - 1);
+            for (auto i = 0; i < 500; ++i)
+            {
+                auto x = distX(generator);
+                auto y = distY(generator);
+
+                targetGrid.AddCell(SparseLife::Cell(x, y));
+            }
+        }
+        break;
+
+    case 1:
         std::cout << "Adding Coe and Fireships" << std::endl;
         targetGrid.ClearCells();
         {
@@ -33,8 +51,9 @@ void SetInitialState(SparseLife::SparseLife &targetGrid, const int patternSelect
         }
         break;
 
-    case 1:
+    case 2:
         std::cout << "Adding oscillators" << std::endl;
+        targetGrid.ClearCells();
         {
             auto cellStream = std::stringstream(achimsp144Cells);
             SparseLife::CellPattern cp;
@@ -51,8 +70,9 @@ void SetInitialState(SparseLife::SparseLife &targetGrid, const int patternSelect
         }
         break;
 
-    case 2:
+    case 3:
         std::cout << "Adding lobster" << std::endl;
+        targetGrid.ClearCells();
         {
             auto cellStream = std::stringstream(lobsterRLE);
             SparseLife::CellPattern cp;
@@ -63,6 +83,6 @@ void SetInitialState(SparseLife::SparseLife &targetGrid, const int patternSelect
         break;
 
     default:
-        std::cerr << "Pattern selector " << patternSelect << " unrecognised" << std::endl;
+        std::cout << "Pattern selector " << patternSelect << " unrecognised" << std::endl;
     }
 }
