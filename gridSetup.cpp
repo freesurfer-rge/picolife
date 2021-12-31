@@ -2,6 +2,8 @@
 #include <random>
 #include <sstream>
 
+#include "pico/time.h"
+
 #include "sparselife/cellpattern.hpp"
 
 #include "cells.hpp"
@@ -16,7 +18,8 @@ void SetInitialState(SparseLife::SparseLife &targetGrid, const int patternSelect
         std::cout << "Adding soup" << std::endl;
         targetGrid.ClearCells();
         {
-            std::default_random_engine generator;
+            auto seed = to_ms_since_boot(get_absolute_time());
+            std::default_random_engine generator(seed);
             std::uniform_int_distribution<int> distX(0, targetGrid.nx - 1);
             std::uniform_int_distribution<int> distY(0, targetGrid.ny - 1);
             for (auto i = 0; i < 500; ++i)
