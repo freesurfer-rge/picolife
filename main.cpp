@@ -1,14 +1,14 @@
 #include <iostream>
 #include <sstream>
 
+#include "pico/stdio.h"
 #include "pico/stdlib.h"
 #include "pico/time.h"
 
-#include "cells.hpp"
-#include "sparselife/cellpattern.hpp"
 #include "sparselife/sparselife.hpp"
 
 #include "colourvector.hpp"
+#include "gridSetup.hpp"
 
 #include "leddriver/ledarray.hpp"
 #include "leddriver/ledimage.hpp"
@@ -35,57 +35,6 @@ LEDDriver::LEDImage ImageFromSparseLife(const SparseLife::SparseLife &grid, cons
     return result;
 }
 
-void SetInitialState(SparseLife::SparseLife &initialGrid)
-{
-#if 0
-    {
-        auto cellStream = std::stringstream(coeShipCells);
-        SparseLife::CellPattern cp;
-        cp.LoadFromStream(cellStream);
-        cp.Translate(2, 4);
-        cp.ExchangeXY();
-        std::cout << "Adding cell count " << cp.GetCells().size() << std::endl;
-        initialGrid.AddCells(cp.GetCells());
-    }
-
-    {
-        auto cellStream = std::stringstream(fireShipCells);
-        SparseLife::CellPattern cp;
-        cp.LoadFromStream(cellStream);
-        cp.Translate(16, 8);
-        cp.FlipY();
-        std::cout << "Adding cell count " << cp.GetCells().size() << std::endl;
-        initialGrid.AddCells(cp.GetCells());
-    }
-#endif
-
-#if 0
-    {
-        auto cellStream = std::stringstream(achimsp144Cells);
-        SparseLife::CellPattern cp;
-        cp.LoadFromStream(cellStream);
-        cp.Translate(2, 1);
-        std::cout << "Adding cell count " << cp.GetCells().size() << std::endl;
-        initialGrid.AddCells(cp.GetCells());
-    }
-    {
-        auto cellStream = std::stringstream(queenBeeShuttleCells);
-        SparseLife::CellPattern cp;
-        cp.LoadFromStream(cellStream);
-        cp.Translate(4, 23);
-        std::cout << "Adding cell count " << cp.GetCells().size() << std::endl;
-        initialGrid.AddCells(cp.GetCells());
-    }
-#endif
-    {
-        auto cellStream = std::stringstream(lobsterRLE);
-        SparseLife::CellPattern cp;
-        cp.LoadRLEFromStream(cellStream);
-        cp.Translate(0, 0);
-        std::cout << "Adding cell count " << cp.GetCells().size() << std::endl;
-        initialGrid.AddCells(cp.GetCells());
-    }
-}
 
 int main()
 {
@@ -101,7 +50,7 @@ int main()
 
     // Populate the Life board
     std::cout << "Adding initial cells to grid" << std::endl;
-    SetInitialState(grid);
+    SetInitialState(grid, 0);
 
     std::cout << "Starting core1" << std::endl;
     LEDDriver::LaunchOnCore1(&ledArr, 5);
@@ -115,6 +64,11 @@ int main()
     while (true)
     {
         ++itCount;
+        auto ch = getchar_timeout_us(0);
+        if( ch != PICO_ERROR_TIMEOUT)
+        {
+            SetInitialState(grid, ch - '0');
+        }
         auto targetTime = make_timeout_time_ms(100);
         grid.Update();
         auto nxtImage = ImageFromSparseLife(grid, itCount);

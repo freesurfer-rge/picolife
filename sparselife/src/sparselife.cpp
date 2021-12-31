@@ -26,6 +26,11 @@ namespace SparseLife
         this->activeCells->insert(cells.begin(), cells.end());
     }
 
+    void SparseLife::ClearCells()
+    {
+        this->activeCells->clear();
+    }
+
     std::vector<Cell>
     SparseLife::GetNeighbours(const Cell c) const
     {
