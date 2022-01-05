@@ -48,7 +48,7 @@ void SetInitialState(SparseLife::SparseLife &targetGrid, const int patternSelect
             auto cellStream = std::stringstream(fireShipCells);
             SparseLife::CellPattern cp;
             cp.LoadFromStream(cellStream);
-            cp.Translate(16, 8);
+            cp.Translate(17, 8);
             cp.FlipY();
             targetGrid.AddCells(cp.GetCells());
         }
@@ -80,7 +80,7 @@ void SetInitialState(SparseLife::SparseLife &targetGrid, const int patternSelect
             auto cellStream = std::stringstream(lobsterRLE);
             SparseLife::CellPattern cp;
             cp.LoadRLEFromStream(cellStream);
-            cp.Translate(0, 0);
+            cp.Translate(2, 2);
             targetGrid.AddCells(cp.GetCells());
         }
         break;
