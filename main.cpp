@@ -35,7 +35,6 @@ LEDDriver::LEDImage ImageFromSparseLife(const SparseLife::SparseLife &grid, cons
     return result;
 }
 
-
 int main()
 {
     stdio_init_all();
@@ -58,6 +57,9 @@ int main()
     std::cout << "Starting Main Loop" << std::endl;
 
     unsigned long itCount = 0;
+    const unsigned long maxPatternIts = 1000;
+    unsigned char nextPattern = 0;
+    const unsigned char maxPattern = 5;
     auto img = ImageFromSparseLife(grid, itCount);
     img.SendToLEDArray(ledArr);
     sleep_ms(1000);
@@ -65,11 +67,18 @@ int main()
     {
         ++itCount;
         auto ch = getchar_timeout_us(0);
-        if( ch != PICO_ERROR_TIMEOUT)
+        if (ch != PICO_ERROR_TIMEOUT || itCount == maxPatternIts)
         {
-            SetInitialState(grid, ch - '0');
+            nextPattern = (nextPattern + 1) % maxPattern;
+            if (ch != PICO_ERROR_TIMEOUT)
+            {
+                nextPattern = ch - '0';
+            }
+            SetInitialState(grid, nextPattern);
+            itCount = 0;
+            sleep_ms(1000);
         }
-        auto targetTime = make_timeout_time_ms(100);
+        auto targetTime = make_timeout_time_ms(50);
         grid.Update();
         auto nxtImage = ImageFromSparseLife(grid, itCount);
         nxtImage.SendToLEDArray(ledArr);
